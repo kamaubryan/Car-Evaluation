@@ -1,13 +1,15 @@
-import { Contact } from 'lucide-react'
-import React from 'react'
-import LandingPage from './Pages/LandingPage/LandingPage'
+import { Contact } from "lucide-react";
+import React from "react";
+import LandingPage from "./Pages/LandingPage/LandingPage";
+import Login from "./Login/Login";
 
 function App() {
   return (
     <>
-    <LandingPage/>
+      {/* <LandingPage />   */}
+      <Login />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
