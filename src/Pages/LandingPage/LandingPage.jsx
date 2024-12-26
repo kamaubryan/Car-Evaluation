@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "/assets/merc.jpg"
+import logo from "/assets/merc.jpg";
 
 function LandingPage() {
   return (
@@ -15,17 +15,22 @@ function LandingPage() {
           </div>
           <div className="navmenu">
             <p>
-              <Link to="/home">Evaluaton</Link>
+              <Link to="/home">Evaluation</Link>
             </p>
-            <p> 
+            <p>
               <Link to="/Services">Services</Link>
             </p>
             <p>
               <Link to="/about">About Us </Link>
             </p>
-            <p></p>
+            <p>
+              <Link to="/settings">Settings</Link>
+            </p>
           </div>
-          <div className="authentication"></div>
+          <div className="authentication">
+            <button className="bg-blue-50 ">Login</button>
+            <button>Sign Up</button>
+          </div>
         </nav>
       </div>
     </>
