@@ -5,9 +5,9 @@ import logo from "/assets/merc.jpg";
 function LandingPage() {
   return (
     <>
-      <div className="container">
+      <div className="container px-8 flex items-center justify-center">
         <nav
-          className="Navbar w-[95%] bg-black mx-auto flex items-center justify-between
+          className="Navbar w-[95%] bg-black mx-auto flex items-center justify-between 
       "
         >
           <div className="logo">
