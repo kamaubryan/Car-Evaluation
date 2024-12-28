@@ -32,6 +32,13 @@ function LandingPage() {
             <button>Sign Up</button>
           </div>
         </nav>
+
+        <div className="heroPage">
+          <div className="hero_Text">
+            <h1>Need your Car valued? <br /> Talk to Us </h1>
+          </div>
+          <div className="Image"></div>
+        </div>
       </div>
     </>
   );
