@@ -1,10 +1,14 @@
 import React from 'react'
 import LandingPage from '../Pages/LandingPage/LandingPage'
+import Navbar from '../Components/Navbar/Navbar'
+import { Outlet } from 'react-router-dom'
 
 function Layout() {
   return (
   <>
-  <LandingPage/>
+ <Navbar/>
+ <Outlet/>
+ 
   </>
   )
 }
