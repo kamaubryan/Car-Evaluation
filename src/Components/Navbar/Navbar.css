@@ -1,0 +1,10 @@
+
+.Navbar{
+    background-color: #6c757d;
+    height: 80px;
+    padding: 10px;
+}
+.navmenu p{
+    font-size: 20px;
+    font-weight: 600px;
+}
