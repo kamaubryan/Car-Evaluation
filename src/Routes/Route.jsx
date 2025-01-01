@@ -4,27 +4,28 @@ import Layout from "../Layout/Layout";
 
 // import About from "../pages/About/About";
 // import Services from "../pages/Services/Services";
-// import Home from "../pages/Home/Home";
+import Home from "../Pages/LandingPage/LandingPage";
 import Contact from "../Pages/ContactsPage/Contact";
 import LoginForm from "../Pages/Login/Login";
+import SignUp from "../Pages/SignUp/SignUp"
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      // {
-      //   path: "",
-      //   element: <Home />,
-      // },
+      {
+        path: "/home",
+        element: <Home />,
+      },
       // {
       //   path: "/about",
       //   element: <About />,
       // },
-      // {
-      //   path: "/services",
-      //   element: <Services />,
-      // },
+      {
+        path: "/signUp",
+        element: <SignUp />,
+      },
       {
         path: "/contact",
         element: <Contact />,
