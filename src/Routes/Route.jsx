@@ -1,4 +1,3 @@
-
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "../Layout/Layout";
 
@@ -7,7 +6,9 @@ import Layout from "../Layout/Layout";
 import Home from "../Pages/LandingPage/LandingPage";
 import Contact from "../Pages/ContactsPage/Contact";
 import LoginForm from "../Pages/Login/Login";
-import SignUp from "../Pages/SignUp/SignUp"
+import SignUp from "../Pages/SignUp/SignUp";
+import Settings from "../Pages/Settings/Settings";
+import Evaluation from "../Pages/Evaluation/Evaluation";
 
 const router = createBrowserRouter([
   {
@@ -18,10 +19,10 @@ const router = createBrowserRouter([
         path: "/home",
         element: <Home />,
       },
-      // {
-      //   path: "/about",
-      //   element: <About />,
-      // },
+      {
+        path: "/settings",
+        element: <Settings />,
+      },
       {
         path: "/signUp",
         element: <SignUp />,
@@ -34,9 +35,13 @@ const router = createBrowserRouter([
         path: "/login",
         element: <LoginForm />,
       },
+      {
+        path: "/evaluation",
+        element: <Evaluation />,
+      }
       // {
       //   path: "*",
-      //   element: <Services />,
+      //   element: <LoginForm />,
       // },
     ],
   },
