@@ -9,6 +9,7 @@ import LoginForm from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
 import Settings from "../Pages/Settings/Settings";
 import Evaluation from "../Pages/Evaluation/Evaluation";
+import Services from "../Pages/Services/Services";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/evaluation",
         element: <Evaluation />,
+      },
+       {
+        path: "/services",
+        element: <Services />,
       }
       // {
       //   path: "*",
