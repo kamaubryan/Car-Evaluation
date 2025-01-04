@@ -12,7 +12,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="Navbar w-[95%] bg-white mx-auto flex items-center justify-between p-4">
+    <nav className="Navbar w-[98%] mx-auto flex items-center justify-between p-4">
       <div className="logo">
         <Link to="/home">
           <img src={logo} alt="logo" width="40px" height="60px" />
