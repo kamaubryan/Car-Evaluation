@@ -7,13 +7,10 @@ function LandingPage() {
     <>
       <div className="container px-8 flex items-center justify-center">
        
-
-        <div className="heroPage">
-          <div className="hero_Text">
-            <h1>Need your Car valued? <br /> Talk to Us </h1>
-          </div>
-          <div className="Image"></div>
-        </div>
+<h1>Looking For Your Next Car? <br/> Look No Further!</h1>
+<p>We offer the best Deals that you can get</p>
+<p>Within A Few Click you can Access your next Car</p>
+       
       </div>
     </>
   );

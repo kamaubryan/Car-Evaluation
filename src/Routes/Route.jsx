@@ -11,6 +11,7 @@ import Settings from "../Pages/Settings/Settings";
 import Evaluation from "../Pages/Evaluation/Evaluation";
 import Services from "../Pages/Services/Services";
 import AboutUs from "../Pages/AboutUs/AboutUs";
+import LandingPage from "../Pages/LandingPage/LandingPage";
 
 const router = createBrowserRouter([
   {
@@ -48,11 +49,11 @@ const router = createBrowserRouter([
         {
         path: "/about",
         element: <AboutUs />,
-      }
-      // {
-      //   path: "*",
-      //   element: <LoginForm />,
-      // },
+      },
+      {
+        path: "*",
+        element: <LandingPage />,
+      },
     ],
   },
 ]);
