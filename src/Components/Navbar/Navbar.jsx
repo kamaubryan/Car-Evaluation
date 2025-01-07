@@ -12,7 +12,12 @@ function Navbar() {
   };
 
   return (
-    <nav className="Navbar w-[98g%] mx-auto flex items-center justify-between p-4">
+    <nav
+      className="Navbar w-[98g%] mx-auto flex items-center justify-between p-4"
+      style={{
+        backgroundColor: "rgba(0, 0, 0, 0.2)", // semi-transparent black background
+      }}
+    >
       <div className="logo">
         <Link to="/home">
           <img src={logo} alt="logo" width="40px" height="60px" />

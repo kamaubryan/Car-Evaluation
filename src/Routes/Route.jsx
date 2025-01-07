@@ -3,7 +3,7 @@ import Layout from "../Layout/Layout";
 
 // import About from "../pages/About/About";
 // import Services from "../pages/Services/Services";
-import Home from "../Pages/LandingPage/LandingPage";
+// import Home from "../Pages/LandingPage/LandingPage";
 import Contact from "../Pages/ContactsPage/Contact";
 import LoginForm from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
@@ -19,8 +19,12 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
+        path: "/",
+        element: <LandingPage />,
+      },
+      {
         path: "/home",
-        element: <Home />,
+        element: <LandingPage />,
       },
       {
         path: "/settings",
@@ -42,11 +46,11 @@ const router = createBrowserRouter([
         path: "/evaluation",
         element: <Evaluation />,
       },
-       {
+      {
         path: "/services",
         element: <Services />,
       },
-        {
+      {
         path: "/about",
         element: <AboutUs />,
       },
