@@ -2,11 +2,10 @@ function LandingPage() {
   return (
     <>
       <div
-        className="container  flex items-center justify-center w-full lg:mt-5"
+        className="container  flex items-center justify-center w-full lg:mt-5 h-[70vh] bg-cover bg-center"
         style={{
           backgroundImage: "url('/assets/automobile-3734396_1920.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+        
         }}
       >
         <h1>
