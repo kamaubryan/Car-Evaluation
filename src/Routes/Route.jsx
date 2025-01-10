@@ -12,6 +12,7 @@ import Evaluation from "../Pages/Evaluation/Evaluation";
 import Services from "../Pages/Services/Services";
 import AboutUs from "../Pages/AboutUs/AboutUs";
 import LandingPage from "../Pages/LandingPage/LandingPage";
+import PageNotFound from "../Pages/Page_Not_Found/PageNotFound";
 
 const router = createBrowserRouter([
   {
@@ -56,7 +57,7 @@ const router = createBrowserRouter([
       },
       {
         path: "*",
-        element: <LandingPage />,
+        element: <PageNotFound />,
       },
     ],
   },
