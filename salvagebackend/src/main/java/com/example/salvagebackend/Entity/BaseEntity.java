@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 
 // this is for the basic information of the car
 @Entity
-public class BaseEntity {
+public  abstract class BaseEntity {
 @Id
-@GeneratedValue(strategy = GenerationType.IDENTITY);
+@GeneratedValue(strategy = GenerationType.IDENTITY)
 private Long id;
 
 // local date amd time
