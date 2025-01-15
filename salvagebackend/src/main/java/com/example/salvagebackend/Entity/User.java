@@ -10,7 +10,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "userData")
+@Table(name = "user_Data")
 public class User extends BaseEntity {
 
     // the id  also the primary key
