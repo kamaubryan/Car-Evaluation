@@ -13,14 +13,10 @@ import lombok.Setter;
 @Table(name = "user_Data")
 public class User extends BaseEntity {
 
-    // the id  also the primary key
 
-//    @Column(updatable = true , nullable = false, name = "Email")
     private String email;
-
-//    @Column(updatable = true, nullable = false, unique = true, name = "Password")
     private String password;
-
+private String username;
     private String firstName;
 //    @Column(name = "L_Name")
     private String lastName;
