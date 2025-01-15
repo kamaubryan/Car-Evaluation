@@ -5,26 +5,23 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table
+
 ////@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 //@DiscriminatorColumn(name = "car_type", discriminatorType = DiscriminatorType.STRING)
-public class CarInventory extends BaseEntity {
+public class Car extends BaseEntity {
 
   @Column(name = "Car_Name")
   private String title;
-  @Column(name = "Selling_Price")
+
   private BigDecimal  sellingPrice;
-  @Column(name = "Damage_Description")
+
   private String damageDescription;
-  @Column(name = "Car_Make")
   private String make;
-  @Column(name = "Car_Model")
+
   private String model;
   @Column(name = "YearOfMake")
   private Integer year;
-  @Column(name = "Mileage")
   private Integer mileage;
-  @Column(name = "Car_Condition")
   private String vehicleCondition;
 
 //  @Enumerated(EnumType.STRING)

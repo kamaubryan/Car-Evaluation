@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class Parts extends BaseEntity {
 
 @ManyToOne
-private CarInventory inventory;
+private Car inventory;
 private String name;
 private String description;
 private String  conditionGrade;
