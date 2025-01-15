@@ -1,16 +1,18 @@
 package com.example.salvagebackend.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Entity
+@Getter
+@Setter
 public class Parts extends BaseEntity {
+
 @ManyToOne
-private CarInventory inventory;
+private Car inventory;
 private String name;
 private String description;
 private String  conditionGrade;
