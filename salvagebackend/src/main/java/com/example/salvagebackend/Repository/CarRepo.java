@@ -12,6 +12,6 @@ import java.util.List;
 public interface CarRepo extends JpaRepository<Car, Long> {
   List<Car> findByMake(String make);
   List<Car> findByModel(String model);
-  List<Car> findByYear(String year);
-  List<Car> findByMileage(String mileage);
+  List<Car> findByYear(Integer year);
+  List<Car> findByMileage(Integer mileage);
 }

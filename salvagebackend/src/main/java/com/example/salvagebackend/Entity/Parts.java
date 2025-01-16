@@ -16,7 +16,7 @@ private Car inventory;
 private String name;
 private String description;
 private String  conditionGrade;
-private BigDecimal price;
+ private BigDecimal price;
 private Integer quantity;
 
 //@Enumerated(EnumType.STRING)
