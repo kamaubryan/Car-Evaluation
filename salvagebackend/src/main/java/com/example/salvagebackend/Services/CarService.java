@@ -14,6 +14,9 @@ public class CarService {
     @Autowired
     CarRepo mycarRepo;
 
+public Car car;
+
+
     // getting all cars
     public List<Car> getAllCars(){
         return mycarRepo.findAll();
@@ -21,11 +24,12 @@ public class CarService {
 
     //getting by Id
 public Car getCarById(Long id){
-        return mycarRepo.findById(id).orElseThrow(()-> new RuntimeException("not found"));
+        return mycarRepo.findById(id).orElseThrow(()-> new RuntimeException("this car " + id + " does not exist"));
     }
     // posting the initial details of the vehicle entity
     @Transactional
-public Car saveCar(Long carId, CarDto carDto ){
+public Car saveCar(CarDto carDto ){
+
         Car savedCar = new Car();
         savedCar.setTitle(carDto.getTitle());
         savedCar.setMake(carDto.getMake());
@@ -37,19 +41,19 @@ public Car saveCar(Long carId, CarDto carDto ){
         savedCar.setDamageDescription(carDto.getDamageDescription());
         return mycarRepo.save(savedCar);
 }
-// updating the car details
 
-    public Car updateCar(CarDto carDto){
-        Car car = new Car();
-        car.setTitle(carDto.getTitle());
-        car.setMake(carDto.getMake());
-        car.setModel(carDto.getModel());
-        car.setYear(carDto.getYear());
-        car.setMileage(carDto.getMileage());
-        car.setSellingPrice(carDto.getSellingPrice());
-        car.setVehicleCondition(carDto.getVehicleCondition());
-        car.setDamageDescription(carDto.getDamageDescription());
-        return mycarRepo.save(car);
+
+    public Car updateCar( Long id ,CarDto carDto){
+        Car updatedCar = mycarRepo.findById(id).orElseThrow(()-> new RuntimeException("car with this " +id + " does not exist"));
+        updatedCar.setTitle(carDto.getTitle());
+        updatedCar.setMake(carDto.getMake());
+        updatedCar.setModel(carDto.getModel());
+        updatedCar.setYear(carDto.getYear());
+        updatedCar.setMileage(carDto.getMileage());
+        updatedCar.setSellingPrice(carDto.getSellingPrice());
+        updatedCar.setVehicleCondition(carDto.getVehicleCondition());
+        updatedCar.setDamageDescription(carDto.getDamageDescription());
+        return mycarRepo.save(updatedCar);
     }
 
     // deleting the existing car
@@ -80,6 +84,11 @@ public Car saveCar(Long carId, CarDto carDto ){
                     throw new RuntimeException("car with year " + year + " does not exist");
                 }
                 return carYear;
+    }
+    // getting by mileage
+    public List<Car> getCarByMileage(Integer mileage) {
+        List<Car> carMileage = mycarRepo.findByMileage(mileage);
+      return carMileage;
     }
 }
 
