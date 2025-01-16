@@ -21,7 +21,7 @@ private String username;
 //    @Column(name = "L_Name")
     private String lastName;
 //    @Column(name = "Phone_number")
-    private String phoneNumber;
+    private Integer phoneNumber;
 //    @Column(name = "Address")
     private String address;
 

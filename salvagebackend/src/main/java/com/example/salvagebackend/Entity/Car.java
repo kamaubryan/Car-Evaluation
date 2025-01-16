@@ -7,33 +7,82 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 @Entity
-@Getter
-@Setter
-////@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(name = "car_type", discriminatorType = DiscriminatorType.STRING)
 public class Car extends BaseEntity {
+  public Car() {
+  }
 
   @Column(name = "car_Name")
-  private String title;
-  private BigDecimal  sellingPrice;
-  private String damageDescription;
-  private String make;
-  private String model;
+  public String title;
+  public BigDecimal  sellingPrice;
+  public String damageDescription;
+  public String make;
+  public String model;
   @Column(name = "yearOfMake")
-  private Integer year;
-  private Integer mileage;
-  private String vehicleCondition;
+  public Integer year;
+  public Integer mileage;
+  public String vehicleCondition;
 
-//  @Enumerated(EnumType.STRING)
-//  private InventoryStatus status = Inventory.Available;
-//  private boolean featured;
+  public String getTitle() {
+    return title;
+  }
 
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-//  public void setDescriptionDescription(String descriptionDescription) {
-//    this.damageDescription = descriptionDescription;
-//  }
+  public BigDecimal getSellingPrice() {
+    return sellingPrice;
+  }
 
+  public void setSellingPrice(BigDecimal sellingPrice) {
+    this.sellingPrice = sellingPrice;
+  }
 
+  public String getDamageDescription() {
+    return damageDescription;
+  }
 
+  public void setDamageDescription(String damageDescription) {
+    this.damageDescription = damageDescription;
+  }
 
+  public String getMake() {
+    return make;
+  }
+
+  public void setMake(String make) {
+    this.make = make;
+  }
+
+  public String getModel() {
+    return model;
+  }
+
+  public void setModel(String model) {
+    this.model = model;
+  }
+
+  public Integer getYear() {
+    return year;
+  }
+
+  public void setYear(Integer year) {
+    this.year = year;
+  }
+
+  public Integer getMileage() {
+    return mileage;
+  }
+
+  public void setMileage(Integer mileage) {
+    this.mileage = mileage;
+  }
+
+  public String getVehicleCondition() {
+    return vehicleCondition;
+  }
+
+  public void setVehicleCondition(String vehicleCondition) {
+    this.vehicleCondition = vehicleCondition;
+  }
 }
