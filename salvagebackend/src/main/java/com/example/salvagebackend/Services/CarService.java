@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CarService {
@@ -89,6 +90,16 @@ public Car saveCar(CarDto carDto ){
     public List<Car> getCarByMileage(Integer mileage) {
         List<Car> carMileage = mycarRepo.findByMileage(mileage);
       return carMileage;
+    }
+
+    public void deleteCarById(Long id) {
+        // Check if the car exists
+        Optional<Car> car = mycarRepo.findById(id);
+        if (car.isPresent()) {
+            mycarRepo.deleteById(id);
+        } else {
+            throw new RuntimeException("Car with ID " + id + " not found");
+        }
     }
 }
 

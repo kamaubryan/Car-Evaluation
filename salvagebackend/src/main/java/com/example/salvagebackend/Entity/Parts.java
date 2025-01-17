@@ -3,14 +3,53 @@ package com.example.salvagebackend.Entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 
-public class Parts extends BaseEntity {
+public class Parts  {
+ @Id
+ @GeneratedValue(strategy = GenerationType.IDENTITY)
+ private Long id;
+ @CreationTimestamp
+ @Temporal(TemporalType.TIMESTAMP)
+ @Column(name = "created_at", updatable = false)
+ private Date createdAt;
 
-@ManyToOne
+ @UpdateTimestamp
+ @Temporal(TemporalType.TIMESTAMP)
+ @Column(name = "updated_at")
+ private Date updatedAt;
+
+ public Date getUpdatedAt() {
+  return updatedAt;
+ }
+
+ public void setUpdatedAt(Date updatedAt) {
+  this.updatedAt = updatedAt;
+ }
+
+ public Date getCreatedAt() {
+  return createdAt;
+ }
+
+ public void setCreatedAt(Date createdAt) {
+  this.createdAt = createdAt;
+ }
+
+ public Long getId() {
+  return id;
+ }
+
+ public void setId(Long id) {
+  this.id = id;
+ }
+
+ @ManyToOne
 private Car inventory;
 private String name;
 private String description;
