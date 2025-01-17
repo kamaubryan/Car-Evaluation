@@ -16,7 +16,7 @@ public class PartsServices {
     @Autowired
     PartsRepo myPartsRepo;
     // getting all the parts
-    List<Parts> getAllParts() {
+    public List<Parts> getAllParts() {
         List<Parts> allParts = myPartsRepo.findAll();
         return allParts;
     }

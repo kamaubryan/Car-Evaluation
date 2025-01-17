@@ -81,7 +81,7 @@ public class UserService {
 
     // getting by last name
 
-    public List<User> getUserByPhoneNumber(Integer phoneNumber) {
+    public List<User> getUserByPhoneNumber(String phoneNumber) {
         List<User> lastNameUsers = myUserRepo.findByPhoneNumber(phoneNumber);
         if (lastNameUsers.isEmpty()) {
             throw new RuntimeException("User with this " + phoneNumber + " does not exist");
