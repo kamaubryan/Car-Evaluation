@@ -1,5 +1,6 @@
 package com.example.salvagebackend.Controller;
 
+import com.example.salvagebackend.Configurations.ApiResponse;
 import com.example.salvagebackend.DTO.CarDto;
 import com.example.salvagebackend.Entity.Car;
 import com.example.salvagebackend.Services.CarService;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -17,16 +19,45 @@ public class CarController {
     @Autowired
     private CarService carService;
 
+
+    @PostMapping("/sayhello")
+    public  String hello(){
+        return "Hello World";
+    }
+
     // Saving the car for the first time
-    @PostMapping
-    public ResponseEntity<Car> createCar(@RequestBody CarDto car) {
+    @PostMapping("/new")
+    public ResponseEntity<?> createCar(@RequestBody CarDto car) {
         try {
             Car savedCar = carService.saveCar(car);
             System.out.println("Car saved: " + savedCar);
-            return new ResponseEntity<>(savedCar, HttpStatus.CREATED);
-        } catch (Exception e) {
-            throw new RuntimeException("This car does not exist: " + car, e);
+            ApiResponse<?> response = new ApiResponse<>(
+                    HttpStatus.OK.value(),
+                    "New car created successfully",
+                   savedCar ,
+                    null
+            );
+            return ResponseEntity.ok(response);
+
+        } catch (ResponseStatusException e) {
+            ApiResponse<String> errorResponse = new ApiResponse<>(
+                    e.getStatusCode().value(),
+                    e.getReason(),
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, e.getStatusCode());
         }
+        catch (Exception e) {
+            ApiResponse<String> errorResponse = new ApiResponse<>(
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "An unexpected error occurred during a request",
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     // Getting all the cars

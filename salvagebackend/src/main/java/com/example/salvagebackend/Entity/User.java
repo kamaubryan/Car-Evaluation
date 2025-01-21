@@ -28,6 +28,7 @@ private String username;
     private String phoneNumber;
 //    @Column(name = "Address")
     private String address;
+    private String role;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -118,5 +119,12 @@ private String username;
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getRole() {
+        return role;
+    }
+    public void setRole(String role) {
+        this.role = role;
     }
 }

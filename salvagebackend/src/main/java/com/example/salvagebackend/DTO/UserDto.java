@@ -8,12 +8,13 @@ import java.io.Serializable;
 
 public class UserDto implements Serializable {
     private String email;
+    private String password;
     private String firstName;
     private String lastName;
     private String phoneNumber;
     private String username;
     private String address;
-    private String name;
+
 
     public String getEmail() {
         return email;
@@ -25,6 +26,14 @@ public class UserDto implements Serializable {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setFirstName(String firstName) {
@@ -63,11 +72,5 @@ public class UserDto implements Serializable {
         this.address = address;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 }
