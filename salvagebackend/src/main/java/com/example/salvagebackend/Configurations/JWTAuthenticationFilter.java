@@ -16,6 +16,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
+import javax.security.sasl.AuthenticationException;
 import java.io.IOException;
 
 @Component
@@ -37,18 +39,19 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 Claims claims = jwtUtility.extractClaims(token);
                 String username = claims.getSubject();
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    System.out.println("Authentication details for user: " + username);
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            username, null, null);
+                            username, null, null);  // Consider adding roles/authorities here
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 } else {
-                    System.out.println("Token invalid");
+                    System.out.println("Token invalid or user already authenticated");
                 }
             }
             filterChain.doFilter(request, response);
-        } catch (AccessDeniedException e) {
-            e.printStackTrace();
-            globalExceptionHandler.handleAccessDeniedException(e);
+        } catch (AuthenticationException e) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().write("Authentication Failed: " + e.getMessage());
         }
     }
 
