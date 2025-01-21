@@ -21,11 +21,7 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
-    public List<Transaction> getUserTransactions(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        return user.getPurchases();
-    }
+  
 
     public Transaction getTransactionById(Long id) {
         return transactionRepository.findById(id)

@@ -24,19 +24,6 @@ public class TransactionController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
-
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getUserTransactions(
-            @RequestHeader(value = "Authorization") String token,
-            @PathVariable Long userId) {
-        try {
-            validateToken(token);
-            return ResponseEntity.ok(transactionService.getUserTransactions(userId));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<?> getTransactionById(
             @RequestHeader(value = "Authorization") String token,
