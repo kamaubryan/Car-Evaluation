@@ -20,7 +20,7 @@ public class PartsController {
     private PartsServices partsServices;
 
     // Get all parts
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<?> getAllParts() {
         try {
             List<Parts> parts = partsServices.getAllParts();
