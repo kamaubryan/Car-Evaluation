@@ -13,6 +13,7 @@ import Services from "../Pages/Services/Services";
 import AboutUs from "../Pages/AboutUs/AboutUs";
 import LandingPage from "../Pages/LandingPage/LandingPage";
 import PageNotFound from "../Pages/Page_Not_Found/PageNotFound";
+import Login from "../Pages/Login/Login";
 
 const router = createBrowserRouter([
   {
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/login",
-        element: <LoginForm />,
+        element: <Login />,
       },
       {
         path: "/evaluation",
