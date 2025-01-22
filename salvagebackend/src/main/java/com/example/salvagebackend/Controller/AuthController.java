@@ -6,19 +6,19 @@ import com.example.salvagebackend.Repository.UserRepo;
 import com.example.salvagebackend.Utilities.JWTUtility;
 import com.example.salvagebackend.dto.LoginRequest;
 import com.example.salvagebackend.Configurations.ApiResponse;
+import com.example.salvagebackend.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     @Autowired
@@ -33,24 +33,59 @@ public class AuthController {
         this.jwtUtility = jwtUtility;
     }
 
+    @GetMapping("/hello")
+    public  String sayHello() {
+        return "Hello";
+    }
 
 
-    @PostMapping("/api/v1/auth/register")
-    public ResponseEntity<ApiResponse<String>> registerUser(@RequestBody UserDto user) {
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse<?>> registerUser(@RequestBody UserDto user) {
         try {
-            User existingUser = new User();
-            existingUser.setAddress(user.getAddress());
-            existingUser.setEmail(user.getEmail());
-            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
-            existingUser.setFirstName(user.getFirstName());
-            existingUser.setLastName(user.getLastName());
+            // Check if user already exists
+            if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+                ApiResponse<String> response = new ApiResponse<>(
+                        HttpStatus.BAD_REQUEST.value(),
+                        "User with this email already exists",
+                        null,
+                        null
+                );
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
 
-            userRepository.save(existingUser);
+            User newUser = new User();
+            newUser.setAddress(user.getAddress());
+            newUser.setEmail(user.getEmail());
+            newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            newUser.setFirstName(user.getFirstName());
+            newUser.setLastName(user.getLastName());
+            newUser.setPhoneNumber(user.getPhoneNumber());
+            newUser.setUsername(user.getUsername());
 
-            ApiResponse<String> response = new ApiResponse<>(
+            // Set default role if none provided
+            String role = (user.getRole() != null) ? user.getRole().toUpperCase() : UserRole.USER.name();
+
+            // Validate role
+            try {
+                UserRole.valueOf(role);
+            } catch (IllegalArgumentException e) {
+                ApiResponse<String> response = new ApiResponse<>(
+                        HttpStatus.BAD_REQUEST.value(),
+                        "Invalid role specified",
+                        null,
+                        null
+                );
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+
+            newUser.setRole(role);
+
+            userRepository.save(newUser);
+
+            ApiResponse<User> response = new ApiResponse<>(
                     HttpStatus.CREATED.value(),
                     "User registered successfully",
-                    null,
+                    newUser,
                     null
             );
             return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -65,7 +100,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/api/v1/auth/login")
+    @PostMapping("/login")
     public ResponseEntity<ApiResponse<?>> loginUser(@RequestBody LoginRequest loginRequest) {
         try {
             User user = userRepository.findByEmail(loginRequest.getEmail())
@@ -76,8 +111,9 @@ public class AuthController {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
             }
 
+
             // If authentication is successful, generate the token and respond with 200
-            String token = jwtUtility.generateJWT(user.getUsername());
+            String token = jwtUtility.generateJWT((user.getEmail()));
             Map<String, String> userDetails = new HashMap<>();
             userDetails.put("token", token);
             userDetails.put("FirstName", user.getFirstName());
