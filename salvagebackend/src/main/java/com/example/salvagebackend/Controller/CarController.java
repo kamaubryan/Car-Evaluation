@@ -18,14 +18,9 @@ public class CarController {
     @Autowired
     private CarService carService;
 
-    @PostMapping("/sayhello")
-    public ResponseEntity<ApiResponse<?>> hello() {
-        return ResponseEntity.ok(new ApiResponse<>(
-                HttpStatus.OK.value(),
-                "Hello World",
-                "Hello World",
-                null
-        ));
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello World";
     }
 
     // Getting the car with ID
