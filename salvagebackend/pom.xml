@@ -48,6 +48,14 @@
 			<version>0.11.5</version>
 		</dependency>
 		<dependency>
+
+
+			<groupId>com.auth0</groupId>
+			<artifactId>auth0</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+		<dependency>
+
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
 			<version>0.11.5</version>
@@ -143,6 +151,12 @@
 							<version>${lombok.version}</version>
 						</path>
 					</annotationProcessorPaths>
+
+
+					<source>21</source>
+					<target>21</target>
+>
+
 				</configuration>
 			</plugin>
 			<plugin>
