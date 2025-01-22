@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,132 +18,174 @@ public class CarController {
     @Autowired
     private CarService carService;
 
-
     @PostMapping("/sayhello")
-    public  String hello(){
-        return "Hello World";
+    public ResponseEntity<ApiResponse<?>> hello() {
+        return ResponseEntity.ok(new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Hello World",
+                "Hello World",
+                null
+        ));
     }
 
-    // Saving the car for the first time
-    @PostMapping("/new")
-    public ResponseEntity<?> createCar(@RequestBody CarDto car) {
+    // Getting the car with ID
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<?>> findCarById(@PathVariable Long id) {
         try {
-            Car savedCar = carService.saveCar(car);
-            System.out.println("Car saved: " + savedCar);
+            Car car = carService.getCarById(id);
             ApiResponse<?> response = new ApiResponse<>(
                     HttpStatus.OK.value(),
-                    "New car created successfully",
-                   savedCar ,
+                    "Car retrieved successfully",
+                    car,
                     null
             );
             return ResponseEntity.ok(response);
-
-        } catch (ResponseStatusException e) {
-            ApiResponse<String> errorResponse = new ApiResponse<>(
-                    e.getStatusCode().value(),
-                    e.getReason(),
-                    null,
-                    e.getMessage()
-            );
-            return new ResponseEntity<>(errorResponse, e.getStatusCode());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             ApiResponse<String> errorResponse = new ApiResponse<>(
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                    "An unexpected error occurred during a request",
+                    "Error retrieving car",
                     null,
                     e.getMessage()
             );
             return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-    }
-
-    // Getting all the cars
-    @GetMapping
-    public ResponseEntity<List<Car>> findCars() {
-        try {
-            List<Car> allCars = carService.getAllCars();
-            return new ResponseEntity<>(allCars, HttpStatus.OK);
-        } catch (Exception e) {
-            throw new RuntimeException("Error retrieving cars", e);
-        }
-    }
-
-    // Getting the car with ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Car> findCarById(@PathVariable Long id) {
-        try {
-            Car car = carService.getCarById(id);
-            return new ResponseEntity<>(car, HttpStatus.OK);
-        } catch (Exception e) {
-            throw new RuntimeException("Car with ID " + id + " does not exist", e);
-        }
     }
 
     // Updating the car
     @PutMapping
-    public ResponseEntity<Car> updateCar(@RequestBody CarDto car) {
+    public ResponseEntity<ApiResponse<?>> updateCar(@RequestBody CarDto car) {
         try {
             Car updatedCar = carService.saveCar(car);
-            return new ResponseEntity<>(updatedCar, HttpStatus.OK);
+            ApiResponse<?> response = new ApiResponse<>(
+                    HttpStatus.OK.value(),
+                    "Car updated successfully",
+                    updatedCar,
+                    null
+            );
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            throw new RuntimeException("Error updating car: " + car, e);
+            ApiResponse<String> errorResponse = new ApiResponse<>(
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "Error updating car",
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     // Deleting the car by ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCarById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<?>> deleteCarById(@PathVariable Long id) {
         try {
             carService.deleteCarById(id);
-            return ResponseEntity.noContent().build();
+            ApiResponse<?> response = new ApiResponse<>(
+                    HttpStatus.OK.value(),
+                    "Car deleted successfully",
+                    null,
+                    null
+            );
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            throw new RuntimeException("Car with ID " + id + " does not exist", e);
+            ApiResponse<String> errorResponse = new ApiResponse<>(
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "Error deleting car",
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     // Getting cars by model
     @GetMapping("/model")
-    public ResponseEntity<List<Car>> findCarsByModel(@RequestParam String model) {
+    public ResponseEntity<ApiResponse<?>> findCarsByModel(@RequestParam String model) {
         try {
             List<Car> modelCars = carService.getCarByModel(model);
-            return new ResponseEntity<>(modelCars, HttpStatus.OK);
+            ApiResponse<?> response = new ApiResponse<>(
+                    HttpStatus.OK.value(),
+                    "Cars retrieved successfully",
+                    modelCars,
+                    null
+            );
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            throw new RuntimeException("Cars with model " + model + " do not exist", e);
+            ApiResponse<String> errorResponse = new ApiResponse<>(
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "Error retrieving cars by model",
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     // Getting cars by year
     @GetMapping("/year")
-    public ResponseEntity<List<Car>> findCarsByYear(@RequestParam Integer year) {
+    public ResponseEntity<ApiResponse<?>> findCarsByYear(@RequestParam Integer year) {
         try {
             List<Car> yearCars = carService.getCarByYear(year);
-            return new ResponseEntity<>(yearCars, HttpStatus.OK);
+            ApiResponse<?> response = new ApiResponse<>(
+                    HttpStatus.OK.value(),
+                    "Cars retrieved successfully",
+                    yearCars,
+                    null
+            );
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            throw new RuntimeException("Cars with year " + year + " do not exist", e);
+            ApiResponse<String> errorResponse = new ApiResponse<>(
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "Error retrieving cars by year",
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     // Getting cars by mileage
     @GetMapping("/mileage")
-    public ResponseEntity<List<Car>> findByMileage(@RequestParam Integer mileage) {
+    public ResponseEntity<ApiResponse<?>> findByMileage(@RequestParam Integer mileage) {
         try {
             List<Car> mileageCars = carService.getCarByMileage(mileage);
-            return new ResponseEntity<>(mileageCars, HttpStatus.OK);
+            ApiResponse<?> response = new ApiResponse<>(
+                    HttpStatus.OK.value(),
+                    "Cars retrieved successfully",
+                    mileageCars,
+                    null
+            );
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            throw new RuntimeException("Cars with mileage " + mileage + " do not exist", e);
+            ApiResponse<String> errorResponse = new ApiResponse<>(
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "Error retrieving cars by mileage",
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     // Getting cars by make
     @GetMapping("/make")
-    public ResponseEntity<List<Car>> findCarsByMake(@RequestParam String make) {
+    public ResponseEntity<ApiResponse<?>> findCarsByMake(@RequestParam String make) {
         try {
             List<Car> makeCars = carService.getCarByMake(make);
-            return new ResponseEntity<>(makeCars, HttpStatus.OK);
+            ApiResponse<?> response = new ApiResponse<>(
+                    HttpStatus.OK.value(),
+                    "Cars retrieved successfully",
+                    makeCars,
+                    null
+            );
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            throw new RuntimeException("Cars with make " + make + " do not exist", e);
+            ApiResponse<String> errorResponse = new ApiResponse<>(
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "Error retrieving cars by make",
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

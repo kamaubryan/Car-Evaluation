@@ -76,6 +76,7 @@ public class AuthController {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
             }
 
+
             // If authentication is successful, generate the token and respond with 200
             String token = jwtUtility.generateJWT(user.getUsername());
             Map<String, String> userDetails = new HashMap<>();
