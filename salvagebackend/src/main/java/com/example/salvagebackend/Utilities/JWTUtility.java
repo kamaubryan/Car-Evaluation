@@ -13,11 +13,14 @@ import java.util.Date;
 
 @Component
 public class JWTUtility {
-@Autowired
-private GlobalExceptionHandler globalExceptionHandler;
+
+    @Autowired
+    private GlobalExceptionHandler globalExceptionHandler;
+
     private static final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final String ISSUER = "salvageBackend";
 
+    // Method to generate JWT token
     public String generateJWT(String username) {
         return Jwts.builder()
                 .setIssuer(ISSUER)
@@ -28,35 +31,50 @@ private GlobalExceptionHandler globalExceptionHandler;
                 .compact();
     }
 
+    // Extract claims from the token
     public Claims extractClaims(String token) {
         try {
             return Jwts.parser()
                     .setSigningKey(SECRET_KEY)
                     .parseClaimsJws(token)
                     .getBody();
-        }catch (Exception e){
+        } catch (Exception e) {
+            // Log and rethrow to handle it properly elsewhere
             globalExceptionHandler.handleJwtExceptions(e);
-            return null;
+            throw new RuntimeException("Invalid JWT Token", e);  // Throwing an exception to be handled by the caller
         }
     }
 
+    // Extract username from the token
     public String extractUsername(String token) {
-        return extractClaims(token).getSubject();
+        Claims claims = extractClaims(token);
+        if (claims != null) {
+            return claims.getSubject();
+        }
+        throw new RuntimeException("Failed to extract username from JWT");
     }
 
+    // Check if the token is expired
     public boolean isTokenExpired(String token) {
-        try{
-            return extractClaims(token).getExpiration().before(new Date());
-
+        try {
+            Claims claims = extractClaims(token);
+            if (claims != null) {
+                return claims.getExpiration().before(new Date());
+            }
         } catch (Exception e) {
             globalExceptionHandler.handleJwtExceptions(e);
-//            throw new RuntimeException(e);
-            return false;
+            throw new RuntimeException("Error checking token expiration", e);
         }
-
+        return true;  // Return true if there's any issue, treating it as expired
     }
 
+    // Validate the token against the username
     public boolean validateToken(String token, String username) {
-        return (username.equals(extractUsername(token)) && !isTokenExpired(token));
+        try {
+            return (username.equals(extractUsername(token)) && !isTokenExpired(token));
+        } catch (RuntimeException e) {
+            // Handle exception gracefully and log it if needed
+            return false;
+        }
     }
 }
