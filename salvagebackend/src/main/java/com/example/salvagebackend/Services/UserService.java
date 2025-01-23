@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -52,8 +53,8 @@ public class UserService {
     }
 
     // getting the user by Email
-    public List<User> getUsersByEmail(String email) {
-        List<User> emailUsers = myUserRepo.findByEmail(email);
+    public Optional<User> getUsersByEmail(String email) {
+        Optional<User> emailUsers = myUserRepo.findByEmail(email);
         if (emailUsers.isEmpty()) {
             throw new RuntimeException("User with this " + email + " does not exist");
         }

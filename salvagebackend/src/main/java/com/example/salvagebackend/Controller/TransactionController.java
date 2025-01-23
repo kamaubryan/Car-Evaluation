@@ -1,5 +1,6 @@
 package com.example.salvagebackend.Controller;
 
+import com.example.salvagebackend.Configurations.ApiResponse;
 import com.example.salvagebackend.Services.TransactionService;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,51 +15,74 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
-
     @GetMapping
-    public ResponseEntity<?> getAllTransactions(@RequestHeader(value = "Authorization") String token) {
+    public ResponseEntity<ApiResponse<?>> getAllTransactions(@RequestHeader(value = "Authorization") String token) {
         try {
             validateToken(token);
-            return ResponseEntity.ok(transactionService.getAllTransactions());
+            ApiResponse<?> response = new ApiResponse<>(
+                    HttpStatus.OK.value(),
+                    "Transactions retrieved successfully",
+                    transactionService.getAllTransactions(),
+                    null
+            );
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getUserTransactions(
-            @RequestHeader(value = "Authorization") String token,
-            @PathVariable Long userId) {
-        try {
-            validateToken(token);
-            return ResponseEntity.ok(transactionService.getUserTransactions(userId));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+            ApiResponse<String> errorResponse = new ApiResponse<>(
+                    HttpStatus.UNAUTHORIZED.value(),
+                    "Unauthorized access",
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getTransactionById(
+    public ResponseEntity<ApiResponse<?>> getTransactionById(
             @RequestHeader(value = "Authorization") String token,
             @PathVariable Long id) {
         try {
             validateToken(token);
-            return ResponseEntity.ok(transactionService.getTransactionById(id));
+            ApiResponse<?> response = new ApiResponse<>(
+                    HttpStatus.OK.value(),
+                    "Transaction retrieved successfully",
+                    transactionService.getTransactionById(id),
+                    null
+            );
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+            ApiResponse<String> errorResponse = new ApiResponse<>(
+                    HttpStatus.UNAUTHORIZED.value(),
+                    "Unauthorized access",
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
         }
     }
 
     @PutMapping("/{id}/status")
-    public ResponseEntity<?> updateTransactionStatus(
+    public ResponseEntity<ApiResponse<?>> updateTransactionStatus(
             @RequestHeader(value = "Authorization") String token,
             @PathVariable Long id,
             @RequestParam String paymentStatus) {
         try {
             validateToken(token);
-            return ResponseEntity.ok(transactionService.updateTransactionStatus(id, paymentStatus));
+            ApiResponse<?> response = new ApiResponse<>(
+                    HttpStatus.OK.value(),
+                    "Transaction status updated successfully",
+                    transactionService.updateTransactionStatus(id, paymentStatus),
+                    null
+            );
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+            ApiResponse<String> errorResponse = new ApiResponse<>(
+                    HttpStatus.UNAUTHORIZED.value(),
+                    "Unauthorized access",
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
         }
     }
 
