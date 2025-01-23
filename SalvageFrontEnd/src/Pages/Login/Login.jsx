@@ -1,77 +1,156 @@
-// // import {Link} from "react-router-dom";
-// import google from "/assets/google-color-svgrepo-com.png";
-// // import SignUp from "../Pages/SignUp/SignUp.jsx";
+import React, { useState } from "react";
+import { Button, Checkbox, Form, Grid, Input, theme, Typography } from "antd";
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import {Link} from 'react-router-dom';
+const { useToken } = theme;
+const { useBreakpoint } = Grid;
+const { Text, Title, } = Typography;
 
-// function Login() {
-//   return (
-//     <div className="w-full flex justify-center items-center h-[100vh]">
-//       <div
-//         className="loginPage flex flex-col rounded-[20px] w-[460px] h-[550px] p-5 justify-between"
-//         id="login"
-//         style={{
-//           backgroundColor: "#ced4da",
-//         }}
-//       >
-//         <h1 className="text-[40px] text-black font-noto-sans-mono text-center">
-//           Welcome Back!
-//         </h1>
+export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate;
+  const handleLogin = async () => {
+    try {
+      if (!email || !password) {
+        setError("Please enter both username and password.");
+        return;
+      }
+      const response = await axios.post(
+        "http://localhost:8085/api/v1/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+      console.log("Login successful:", response.data);
+      navigate("/landingPage");
+    } catch (error) {
+      console.error(
+        "Login failed:",
+        error.response ? error.response.data : error.message
+      );
+      setError("Invalid username or password.");
+    }
+  };
+  const { token } = useToken();
+  const screens = useBreakpoint();
 
-//         <div className="flex flex-col w-[400px] items-center h-[200px] gap-4">
-//           <div className="email flex flex-col h-[80px] gap-2">
-//             <label htmlFor="email" className="text-black">Email</label>
-//             <input
-//               type="email"
-//               name="email"
-//               id="email"
-//               placeholder="Enter your email"
-//               className="w-[350px] h-[40px] p-2 rounded-[15px] border-none focus:outline-none"
-//             />
-//           </div>
+  const onFinish = (values) => {
+    console.log("Received values of form: ", values);
+  };
 
-//           <div className="password flex flex-col h-[80px] gap-2">
-//             <label htmlFor="password" className="text-black">Password</label>
-//             <input
-//               type="password"
-//               name="password"
-//               id="password"
-//               placeholder="Enter your password"
-//               className="w-[350px] h-[40px] p-2 rounded-[15px] border-none focus:outline-none"
-//             />
-//           </div>
-//         </div>
+  const styles = {
+    container: {
+      margin: "0 auto",
+      padding: screens.md
+        ? `${token.paddingXL}px`
+        : `${token.sizeXXL}px ${token.padding}px`,
+      width: "380px",
+    },
+    footer: {
+      marginTop: token.marginLG,
+      textAlign: "center",
+      width: "100%",
+    },
+    forgotPassword: {
+      float: "right",
+    },
+    header: {
+      marginBottom: token.marginXL,
+    },
+    section: {
+      alignItems: "center",
+      backgroundColor: token.colorBgContainer,
+      display: "flex",
+      height: screens.sm ? "100vh" : "auto",
+      padding: screens.md ? `${token.sizeXXL}px 0px` : "0px",
+    },
+    text: {
+      color: token.colorTextSecondary,
+    },
+    title: {
+      fontSize: screens.md ? token.fontSizeHeading2 : token.fontSizeHeading3,
+    },
+  };
 
-//         <div className="checkbox w-[400px] flex items-center justify-between px-3">
-//           <div className="input flex items-center gap-2">
-//             <input type="checkbox" name="rememberMe" id="rememberMe" />
-//             <label htmlFor="rememberMe" className="text-black">Remember me</label>
-//           </div>
-//           <p className="text-black">Forgot Password</p>
-//         </div>
-
-//         <div className="buttons w-[370px] flex items-center justify-between flex-col h-[90px] px-8 gap-4">
-//           <button className="bg-black text-white w-[350px] h-[40px] rounded-[15px] text-[18px]">
-//             Sign in
-//           </button>
-
-//           <button className="bg-white text-black w-[350px] h-[40px] rounded-[15px] text-[18px] flex items-center justify-center gap-2">
-//             <img src={google} className="w-[20px] h-[20px]" alt="Google Logo" />
-//             Sign in with Google
-//           </button>
-//         </div>
-
-//         {/* <div className="footer flex justify-center items-center mt-4">
-//           <span>Don't have an account? </span>
-//           <span className="text-blue-600 mx-2">
-//             <Link to="/" className="text-blue-500">
-//              <SignUp/>
-//             </Link>
-//           </span>
-//         </div> */}
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Login;
-
-
+  return (
+    <section style={styles.section} className="h-[40vh]">
+      <div style={styles.container} className="h-[40vh]">
+        <div style={styles.header}>
+          <Title style={styles.title}>Sign in</Title>
+          <Text style={styles.text}>
+            Welcome back to AntBlocks UI! Please enter your details below to
+            sign in.
+          </Text>
+        </div>
+        <Form
+          name="normal_login"
+          initialValues={{
+            remember: true,
+          }}
+          onFinish={onFinish}
+          layout="vertical"
+          requiredMark="optional"
+        >
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                type: "email",
+                required: true,
+                message: "Please input your Email!",
+              },
+            ]}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          >
+            <Input prefix={<MailOutlined />} placeholder="Email" />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your Password!",
+              },
+            ]}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          >
+            <Input.Password
+              prefix={<LockOutlined />}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Item>
+          <Form.Item>
+            <Form.Item name="remember" valuePropName="checked" noStyle>
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+            <a style={styles.forgotPassword} href="">
+              Forgot password?
+            </a>
+          </Form.Item>
+          <Form.Item style={{ marginBottom: "0px" }}>
+            <Button
+              block="true"
+              type="primary"
+              htmlType="submit"
+              onClick={handleLogin}
+            >
+              Log in
+            </Button>
+            <div style={styles.footer}>
+              <Text style={styles.text}>Don't have an account?</Text>{" "}
+              <Link to ="/signup">Sign up now</Link>
+            </div>
+          </Form.Item>
+        </Form>
+      </div>
+    </section>
+  );
+}
