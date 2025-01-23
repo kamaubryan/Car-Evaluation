@@ -23,6 +23,29 @@ public class CarController {
         return "Hello World";
     }
 
+    // Creating a new car
+    @PostMapping
+    public ResponseEntity<ApiResponse<?>> createCar(@RequestBody CarDto car) {
+        try {
+            Car savedCar = carService.saveCar(car);
+            ApiResponse<?> response = new ApiResponse<>(
+                    HttpStatus.CREATED.value(),
+                    "Car created successfully",
+                    savedCar,
+                    null
+            );
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (Exception e) {
+            ApiResponse<String> errorResponse = new ApiResponse<>(
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "Error creating car",
+                    null,
+                    e.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     // Getting the car with ID
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> findCarById(@PathVariable Long id) {
