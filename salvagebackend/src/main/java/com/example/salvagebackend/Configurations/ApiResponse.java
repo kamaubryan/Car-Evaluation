@@ -10,13 +10,6 @@ public class ApiResponse<T> {
     private LocalDateTime timestamp;
     private String error;
 
-    public ApiResponse(int status, String message, T data) {
-        this.status = status;
-        this.message = message;
-        this.data = data;
-        this.timestamp = LocalDateTime.now();
-    }
-
     public ApiResponse(int status, String message, T data, String error) {
         this.status = status;
         this.message = message;

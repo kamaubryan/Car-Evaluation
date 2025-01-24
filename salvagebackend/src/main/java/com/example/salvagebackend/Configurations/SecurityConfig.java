@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/api/v1/auth/**", "/api/v1/user/**")
+                                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/api/v1/auth/**", "/api/v1/user/**", "api/v1/cars/**", "api/v1/parts/**", "api/images/**")
                                 .permitAll()// Keep this for auth endpoints
                                 .requestMatchers("/api/v1/cars/**").hasRole("USER")// Cars should be authenticated
 //                                 .requestMatchers("/api/v1/parts/**").authenticated()
