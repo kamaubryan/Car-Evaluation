@@ -66,7 +66,7 @@ export default function Login() {
       alignItems: "center",
       backgroundColor: token.colorBgContainer,
       display: "flex",
-      height: screens.sm ? "100vh" : "auto",
+      height: screens.sm ? "70vh" : "auto",
       padding: screens.md ? `${token.sizeXXL}px 0px` : "0px",
     },
     text: {
@@ -83,8 +83,7 @@ export default function Login() {
         <div style={styles.header}>
           <Title style={styles.title}>Sign in</Title>
           <Text style={styles.text}>
-            Welcome back to AntBlocks UI! Please enter your details below to
-            sign in.
+          Welcome to Car salvage vehicle Marketplace where you can buy and sell your vehicles.
           </Text>
         </div>
         <Form
@@ -131,9 +130,7 @@ export default function Login() {
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
-            <a style={styles.forgotPassword} href="">
-              Forgot password?
-            </a>
+          
           </Form.Item>
           <Form.Item style={{ marginBottom: "0px" }}>
             <Button

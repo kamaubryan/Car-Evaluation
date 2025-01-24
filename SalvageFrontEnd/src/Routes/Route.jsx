@@ -5,7 +5,6 @@ import Layout from "../Layout/Layout";
 // import Services from "../pages/Services/Services";
 // import Home from "../Pages/LandingPage/LandingPage";
 import Contact from "../Pages/ContactsPage/Contact";
-import LoginForm from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
 import Settings from "../Pages/Settings/Settings";
 import Evaluation from "../Pages/Evaluation/Evaluation";
