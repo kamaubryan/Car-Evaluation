@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/api/images")
+@RequestMapping("/api/v5/images")
 public class CarImageController {
     @Autowired
     private CarImageService carImageService;

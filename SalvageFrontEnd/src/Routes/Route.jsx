@@ -5,7 +5,6 @@ import Layout from "../Layout/Layout";
 // import Services from "../pages/Services/Services";
 // import Home from "../Pages/LandingPage/LandingPage";
 import Contact from "../Pages/ContactsPage/Contact";
-import LoginForm from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
 import Settings from "../Pages/Settings/Settings";
 import Evaluation from "../Pages/Evaluation/Evaluation";
@@ -13,6 +12,7 @@ import Services from "../Pages/Services/Services";
 import AboutUs from "../Pages/AboutUs/AboutUs";
 import LandingPage from "../Pages/LandingPage/LandingPage";
 import PageNotFound from "../Pages/Page_Not_Found/PageNotFound";
+import Login from "../Pages/Login/Login";
 
 const router = createBrowserRouter([
   {
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/login",
-        element: <LoginForm />,
+        element: <Login />,
       },
       {
         path: "/evaluation",

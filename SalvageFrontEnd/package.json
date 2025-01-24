@@ -10,8 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.6.0",
     "@nextui-org/react": "^2.4.8",
+    "antd": "^5.23.2",
+    "antd-phone-input": "^0.3.12",
+    "axios": "^1.7.9",
     "framer-motion": "^11.11.17",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.460.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

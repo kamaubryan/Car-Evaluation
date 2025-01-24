@@ -1,3 +1,5 @@
+package com.example.salvagebackend.Controller;
+
 import com.example.salvagebackend.Configurations.ApiResponse;
 import com.example.salvagebackend.DTO.PartDto;
 import com.example.salvagebackend.Entity.Parts;
@@ -11,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/parts")
+@RequestMapping("/api/v3/parts")
 @CrossOrigin(origins = "*")
 public class PartsController {
 
