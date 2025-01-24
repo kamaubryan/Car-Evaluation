@@ -5,6 +5,7 @@ import { Button, Form, Grid, Input, theme, Typography } from "antd";
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import PhoneInput from "antd-phone-input";
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -17,34 +18,23 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // State to manage error messages
   const history = useNavigate(); // Get the history object for redirection
+  const [form] = Form.useForm();
 
-  const handleSignup = async () => {
+  const handleSignup = async (values) => {
     try {
       // Check for empty fields
-      if (
-        !fistName ||
-        secondddddd ||
-        !email ||
-        !password ||
-        !confirmPassword ||
-        !mobile
-      ) {
-        setError("Please fill in all fields.");
-        return;
-      }
+      // if (
+      //   !firstName ||
+      //   !secondName ||
+      //   !email ||
+      //   !password
+      // ) {
+      //   setError("Please fill in all fields.");
+      //   return;
+      // }
 
+      console.log(values);
 
-      const response = await axios.post(
-        "http://localhost:8081/api/v1/auth/signup",
-        {
-          firstName,
-          secondName,
-          email,
-          password,
-        }
-      );
-      // Handle successful signup
-      console.log(response.data);
       history("/landingPage");
     } catch (error) {
       // Handle signup error
@@ -58,8 +48,15 @@ export default function SignUp() {
   const { token } = useToken();
   const screens = useBreakpoint();
 
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const onFinish = async (values) => {
+    const response = await axios.post(
+      "http://localhost:8085/api/v1/auth/register",
+      {
+        values,
+      }
+    );
+    // Handle successful signup
+    console.log(response.data);
   };
 
   const styles = {
@@ -111,9 +108,10 @@ export default function SignUp() {
           onFinish={onFinish}
           layout="vertical"
           requiredMark="optional"
+          form={form}
         >
           <Form.Item
-            name="First Name"
+            name="firstName"
             rules={[
               {
                 required: true,
@@ -130,7 +128,7 @@ export default function SignUp() {
             />
           </Form.Item>
           <Form.Item
-            name="Second Name"
+            name="secondName"
             rules={[
               {
                 required: true,
@@ -164,9 +162,27 @@ export default function SignUp() {
               }}
             />
           </Form.Item>
+          
           <Form.Item
-            name="password"
-            extra="Password needs to be at least 8 characters."
+            name="username"
+            rules={[
+              {
+                type: "username",
+                required: true,
+                message: "Please input your Username!",
+              },
+            ]}
+          >
+            <Input
+            prefix
+              placeholder="username"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            name="phonenumber"
             rules={[
               {
                 required: true,
@@ -174,14 +190,7 @@ export default function SignUp() {
               },
             ]}
           >
-            <Input.Password
-              prefix={<LockOutlined />}
-              type="password"
-              placeholder="Password"
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            />
+            <PhoneInput enableSearch />
           </Form.Item>
           <Form.Item style={{ marginBottom: "0px" }}>
             <Button block type="primary" htmlType="submit">
