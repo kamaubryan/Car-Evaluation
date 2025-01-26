@@ -15,6 +15,7 @@ export default function SignUp() {
   const [firstName, setFirstName] = useState("");
   const [secondName, setSecondName] = useState("");
   const [email, setEmail] = useState("");
+  const [address , setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // State to manage error messages
   const history = useNavigate(); // Get the history object for redirection
@@ -145,6 +146,23 @@ export default function SignUp() {
             />
           </Form.Item>
           <Form.Item
+            name="address"
+            rules={[
+              {
+                required: true,
+                message: "Please input your  adress!",
+              },
+            ]}
+          >
+            <Input
+              // prefix={<UserOutlined />}
+              placeholder="adress"
+              onChange={(e) => {
+                setAddress(e.target.value);
+              }}
+            />
+          </Form.Item>
+          <Form.Item
             name="email"
             rules={[
               {
@@ -162,7 +180,7 @@ export default function SignUp() {
               }}
             />
           </Form.Item>
-          
+
           <Form.Item
             name="username"
             rules={[
@@ -174,7 +192,7 @@ export default function SignUp() {
             ]}
           >
             <Input
-            prefix
+              prefix={<UserOutlined />}
               placeholder="username"
               onChange={(e) => {
                 setEmail(e.target.value);
