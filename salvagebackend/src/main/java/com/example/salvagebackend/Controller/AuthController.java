@@ -42,7 +42,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<?>> registerUser(@RequestBody UserDto user) {
         try {
-<<<<<<< Updated upstream
+
             // Check if user already exists
             if (userRepository.findByEmail(user.getEmail()).isPresent()) {
                 ApiResponse<String> response = new ApiResponse<>(
@@ -53,14 +53,13 @@ public class AuthController {
                 );
                 return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
             }
-=======
+
             User existingUser = new User();
 //            existingUser.setAddress(user.getAddress());
             existingUser.setEmail(user.getEmail());
             existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
             existingUser.setFirstName(user.getFirstName());
             existingUser.setLastName(user.getLastName());
->>>>>>> Stashed changes
 
             User newUser = new User();
             newUser.setAddress(user.getAddress());
