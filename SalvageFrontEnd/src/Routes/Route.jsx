@@ -54,7 +54,12 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <AboutUs />,
+    
       },
+      {
+        path: "/contact
+        element:<Contac
+      }
       {
         path: "*",
         element: <PageNotFound />,
