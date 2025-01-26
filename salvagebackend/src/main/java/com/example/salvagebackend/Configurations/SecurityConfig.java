@@ -28,8 +28,6 @@ public class SecurityConfig {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userDetailsService = userDetailsService;
     }
-
-<<<<<<< Updated upstream
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
 //            http.cors(cors -> cors.configurationSource(request -> {
@@ -55,43 +53,42 @@ public class SecurityConfig {
                 )
                 .authenticationManager(authenticationManager)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-=======
+                .build();}
+//        @Bean
+//        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//            http.cors(cors -> cors.configurationSource(request -> {
+//                CorsConfiguration config = new CorsConfiguration();
+//                config.setAllowCredentials(true);
+//                config.addAllowedOriginPattern("*");
+//                config.addAllowedHeader("*");
+//                config.addAllowedMethod("*");
+//                return config;
+//            }));
+//            http.csrf(AbstractHttpConfigurer::disable)
+//                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                    .authorizeHttpRequests((requests) -> requests
+//                            .requestMatchers("/api/v1/auth/**").permitAll()  // Keep this for auth endpoints
+//                            .requestMatchers("/api/v1/cars/**").authenticated()  // Cars should be authenticated
+//                            .requestMatchers("/api/v1/parts/**").authenticated()
+//                            .requestMatchers("/api/v1/users/**").authenticated()
+//                            .requestMatchers("/api/transactions/**").authenticated()
+//                            .anyRequest().authenticated()
+//                    )
+//                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//>>>>>>> Stashed changes
+//
+//        }
+
         @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-            http.cors(cors -> cors.configurationSource(request -> {
-                        CorsConfiguration config = new CorsConfiguration();
-                        config.setAllowCredentials(true);
-                        config.addAllowedOriginPattern("*");
-                        config.addAllowedHeader("*");
-                        config.addAllowedMethod("*");
-                        return config;
-                    }));
-                 http.csrf(AbstractHttpConfigurer::disable)
-                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                         .authorizeHttpRequests((requests) -> requests
-                                 .requestMatchers("/api/v1/auth/**").permitAll()  // Keep this for auth endpoints
-                                 .requestMatchers("/api/v1/cars/**").authenticated()  // Cars should be authenticated
-                                 .requestMatchers("/api/v1/parts/**").authenticated()
-                                 .requestMatchers("/api/v1/users/**").authenticated()
-                                 .requestMatchers("/api/transactions/**").authenticated()
-                                 .anyRequest().authenticated()
-                         )
-                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
->>>>>>> Stashed changes
+        public BCryptPasswordEncoder passwordEncoder() {
+            return new BCryptPasswordEncoder();
+        }
 
+        @Bean
+        public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+            AuthenticationManagerBuilder authenticationManagerBuilder =
+                    http.getSharedObject(AuthenticationManagerBuilder.class);
+            authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+            return authenticationManagerBuilder.build();
+        }
     }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-        return authenticationManagerBuilder.build();
-    }
-}
