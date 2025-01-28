@@ -10,6 +10,8 @@ import Services from "../Pages/Services/Services";
 import CarList from "../Pages/Cars/Car";
 import Parts from "../Pages/Parts/Parts";
 import PageNotFound from "../Pages/Page_Not_Found/PageNotFound";
+import ErrorPage from "../Pages/Error404Page";
+import CartPage from "../Pages/Cart/CartPage";
 
 // ... other imports
 
@@ -39,19 +41,28 @@ const router = createBrowserRouter([
         path: "/cars",
         element: (
           <AuthGuard>
-            <CarList />
-          </AuthGuard>
+          <CarList />
+           </AuthGuard>
         ),
       },
       {
         path: "/parts",
         element: (
           <AuthGuard>
-            <Parts />
+          <Parts />
           </AuthGuard>
         ),
       },
-      { path: "*", element: <PageNotFound /> },
+      {
+        path: "/cart",
+        element: (
+          <AuthGuard>
+          <CartPage />
+           </AuthGuard>
+        ),
+      },
+      // { path: "*", element: <PageNotFound /> },
+      { path: "*", element: <ErrorPage /> },
     ],
   },
 ]);
