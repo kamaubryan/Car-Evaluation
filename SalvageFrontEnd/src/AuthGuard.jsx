@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { LoadingOutlined } from "@ant-design/icons";
+import CartContext from "./context/contextProvider";
 
 const publicRoutes = [
   "/",
@@ -14,37 +15,33 @@ const publicRoutes = [
 ];
 
 const AuthGuard = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isAuthenticated } = useContext(CartContext);
   const [isLoading, setIsLoading] = useState(true);
   const currentPath = window.location.pathname;
 
   useEffect(() => {
-    const validateToken = async () => {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        setIsAuthenticated(false);
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        await axios.get("http://localhost:8085/api/v1/validate-token", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setIsAuthenticated(true);
-      } catch (error) {
-        localStorage.removeItem("token");
-        setIsAuthenticated(false);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    validateToken();
+    // const validateToken = async () => {
+    //   const token = localStorage.getItem("token");
+    //   if (!token) {
+    //     setIsAuthenticated(true);
+    //     setIsLoading(false);
+    //     return;
+    //   }
+    //   try {
+    //     await axios.get("http://localhost:8085/api/v1/validate-token", {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     });
+    //     setIsAuthenticated(true);
+    //   } catch (error) {
+    //     localStorage.removeItem("token");
+    //     setIsAuthenticated(false);
+    //   } finally {
+    //     setIsLoading(false);
+    //   }
+    // };
+    // validateToken();
   }, []);
 
   if (isLoading) {
