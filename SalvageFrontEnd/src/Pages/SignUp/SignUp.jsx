@@ -2,7 +2,12 @@ import React, { useState } from "react";
 
 import { Button, Form, Grid, Input, theme, Typography } from "antd";
 
-import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  LockOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import PhoneInput from "antd-phone-input";
@@ -12,53 +17,12 @@ const { useBreakpoint } = Grid;
 const { Text, Title } = Typography;
 
 export default function SignUp() {
-  const [firstName, setFirstName] = useState("");
-  const [secondName, setSecondName] = useState("");
-  const [email, setEmail] = useState("");
-  const [address , setAddress] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // State to manage error messages
   const history = useNavigate(); // Get the history object for redirection
   const [form] = Form.useForm();
 
-  const handleSignup = async (values) => {
-    try {
-      // Check for empty fields
-      // if (
-      //   !firstName ||
-      //   !secondName ||
-      //   !email ||
-      //   !password
-      // ) {
-      //   setError("Please fill in all fields.");
-      //   return;
-      // }
-
-      console.log(values);
-
-      history("/landingPage");
-    } catch (error) {
-      // Handle signup error
-      console.error(
-        "Signup failed:",
-        error.response ? error.response.data : error.message
-      );
-      setError(error.response ? error.response.data : error.message);
-    }
-  };
   const { token } = useToken();
   const screens = useBreakpoint();
-
-  const onFinish = async (values) => {
-    const response = await axios.post(
-      "http://localhost:8085/api/v1/auth/register",
-      {
-        values,
-      }
-    );
-    // Handle successful signup
-    console.log(response.data);
-  };
 
   const styles = {
     container: {
@@ -106,7 +70,15 @@ export default function SignUp() {
         </div>
         <Form
           name="normal_signup"
-          onFinish={onFinish}
+          onFinish={async (values) => {
+            const response = await axios.post(
+              "http://localhost:8085/api/v1/auth/register",
+              values
+            );
+
+            console.log(response.data);
+            history("/login");
+          }}
           layout="vertical"
           requiredMark="optional"
           form={form}
@@ -120,47 +92,7 @@ export default function SignUp() {
               },
             ]}
           >
-            <Input
-              prefix={<UserOutlined />}
-              placeholder="FirstName"
-              onChange={(e) => {
-                setFirstName(e.target.value);
-              }}
-            />
-          </Form.Item>
-          <Form.Item
-            name="secondName"
-            rules={[
-              {
-                required: true,
-                message: "Please input your second Name!",
-              },
-            ]}
-          >
-            <Input
-              prefix={<UserOutlined />}
-              placeholder="Second Name"
-              onChange={(e) => {
-                setSecondName(e.target.value);
-              }}
-            />
-          </Form.Item>
-          <Form.Item
-            name="address"
-            rules={[
-              {
-                required: true,
-                message: "Please input your  adress!",
-              },
-            ]}
-          >
-            <Input
-              // prefix={<UserOutlined />}
-              placeholder="adress"
-              onChange={(e) => {
-                setAddress(e.target.value);
-              }}
-            />
+            <Input prefix={<UserOutlined />} placeholder="FirstName" />
           </Form.Item>
           <Form.Item
             name="email"
@@ -172,13 +104,7 @@ export default function SignUp() {
               },
             ]}
           >
-            <Input
-              prefix={<MailOutlined />}
-              placeholder="Email"
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
+            <Input prefix={<MailOutlined />} placeholder="Email" />
           </Form.Item>
 
           <Form.Item
@@ -191,16 +117,10 @@ export default function SignUp() {
               },
             ]}
           >
-            <Input
-              prefix={<UserOutlined />}
-              placeholder="username"
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
+            <Input prefix={<UserOutlined />} placeholder="username" />
           </Form.Item>
           <Form.Item
-            name="phonenumber"
+            name="phoneNumber"
             rules={[
               {
                 required: true,
@@ -208,9 +128,28 @@ export default function SignUp() {
               },
             ]}
           >
-            <PhoneInput enableSearch />
+            <Input
+              prefix={<PhoneOutlined />}
+              type="number"
+              placeholder="Phone Number"
+            />
           </Form.Item>
-          <Form.Item style={{ marginBottom: "0px" }}>
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your Password!",
+              },
+            ]}
+          >
+            <Input.Password
+              prefix={<LockOutlined />}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Item>
+          <Form.Item style={{ marginBottom: "0px" }} lo>
             <Button block type="primary" htmlType="submit">
               Sign up
             </Button>
