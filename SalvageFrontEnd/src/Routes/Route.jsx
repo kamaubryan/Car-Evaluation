@@ -1,74 +1,53 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AuthGuard from "../AuthGuard";
+import Layout from "../Layout/Layout";
 import LandingPage from "../Pages/LandingPage/LandingPage";
 import Login from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
 import Contact from "../Pages/ContactsPage/Contact";
 import AboutUs from "../Pages/AboutUs/AboutUs";
-import Layout from "../Layout/Layout";
-import Services from "../Pages/Services/Services";
-import CarList from "../Pages/Cars/Car";
-import Parts from "../Pages/Parts/Parts";
-import PageNotFound from "../Pages/Page_Not_Found/PageNotFound";
-import ErrorPage from "../Pages/Error404Page";
-import CartPage from "../Pages/Cart/CartPage";
 
-// ... other imports
+import PageNotFound from "../Pages/Page_Not_Found/PageNotFound";
+import AuthGuard from "../Components/Private/AuthGuard";
+import AdminLayout from "../AdminDashboard/AdminLayout";
+import AdminDashBoard from "../AdminDashboard/DashBoard/AdminDashboard";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      { path: "/", element: <LandingPage /> },
+      {
+        path: "/",
+        index: true,
+        element: <LandingPage />,
+      },
       { path: "/home", element: <LandingPage /> },
-      { path: "/signUp", element: <SignUp /> },
-      { path: "/contact", element: <Contact /> },
       { path: "/login", element: <Login /> },
+      { path: "/signup", element: <SignUp /> },
+      { path: "/contact", element: <Contact /> },
       { path: "/about", element: <AboutUs /> },
-      { path: "/services", element: <Services /> },
-
-      // Protected routes
-      // {
-      //   path: "/evaluation",
-      //   element: (
-      //     <AuthGuard>
-      //       <Evaluation />
-      //     </AuthGuard>
-      //   ),
-      // },
+      { path: "*", element: <PageNotFound /> },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <AuthGuard>
+        <AdminLayout />
+      </AuthGuard>
+    ),
+    children: [
       {
-        path: "/cars",
-        element: (
-          <AuthGuard>
-          <CarList />
-           </AuthGuard>
-        ),
+        path: "/dashboard",
+        index: true,
+        element: <AdminDashBoard />,
       },
-      {
-        path: "/parts",
-        element: (
-          <AuthGuard>
-          <Parts />
-          </AuthGuard>
-        ),
-      },
-      {
-        path: "/cart",
-        element: (
-          <AuthGuard>
-          <CartPage />
-           </AuthGuard>
-        ),
-      },
-      // { path: "*", element: <PageNotFound /> },
-      { path: "*", element: <ErrorPage /> },
     ],
   },
 ]);
 
-function Route() {
+function Routes() {
   return <RouterProvider router={router} />;
 }
 
-export default Route;
+export default Routes;
