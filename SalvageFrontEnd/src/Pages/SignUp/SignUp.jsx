@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Button, Form, Grid, Input, theme, Typography } from "antd";
+import { Button, Form, Grid, Input, Select, Space, theme, Typography } from "antd";
 
 import {
   LockOutlined,
@@ -71,13 +71,16 @@ export default function SignUp() {
         <Form
           name="normal_signup"
           onFinish={async (values) => {
-            const response = await axios.post(
-              "http://localhost:8085/api/v1/auth/register",
-              values
-            );
-
-            console.log(response.data);
-            history("/login");
+            try {
+              const response = await axios.post(
+                "http://localhost:8085/api/v1/auth/register",
+                values
+              );
+              console.log(response.data);
+              history("/login");
+            } catch (error) {
+              console.error("Registration failed:", error);
+            }
           }}
           layout="vertical"
           requiredMark="optional"
@@ -88,12 +91,13 @@ export default function SignUp() {
             rules={[
               {
                 required: true,
-                message: "Please input your  Second Name!",
+                message: "Please input your First Name!",
               },
             ]}
           >
             <Input prefix={<UserOutlined />} placeholder="FirstName" />
           </Form.Item>
+
           <Form.Item
             name="email"
             rules={[
@@ -111,7 +115,6 @@ export default function SignUp() {
             name="username"
             rules={[
               {
-                type: "username",
                 required: true,
                 message: "Please input your Username!",
               },
@@ -119,12 +122,13 @@ export default function SignUp() {
           >
             <Input prefix={<UserOutlined />} placeholder="username" />
           </Form.Item>
+
           <Form.Item
             name="phoneNumber"
             rules={[
               {
                 required: true,
-                message: "Please input your Password!",
+                message: "Please input your Phone Number!",
               },
             ]}
           >
@@ -134,6 +138,7 @@ export default function SignUp() {
               placeholder="Phone Number"
             />
           </Form.Item>
+
           <Form.Item
             name="password"
             rules={[
@@ -149,7 +154,36 @@ export default function SignUp() {
               placeholder="Password"
             />
           </Form.Item>
-          <Form.Item style={{ marginBottom: "0px" }} lo>
+
+          <Form.Item
+            name="role"
+            initialValue="USER"
+            rules={[
+              {
+                required: true,
+                message: "Please select a role!",
+              },
+            ]}
+          >
+            <Select
+              style={{
+                width: "100%",
+                marginBottom: 20,
+              }}
+              options={[
+                {
+                  value: "USER",
+                  label: "USER",
+                },
+                {
+                  value: "ADMIN",
+                  label: "ADMIN",
+                },
+              ]}
+            />
+          </Form.Item>
+
+          <Form.Item style={{ marginBottom: "0px" }}>
             <Button block type="primary" htmlType="submit">
               Sign up
             </Button>
