@@ -161,6 +161,7 @@ import { Link } from "react-router-dom";
 import { useStore } from "zustand";
 import useCartStore from "../../Zustand/Zustand";
 import CartContext from "../../context/contextProvider";
+import { loginUser } from "../Services/auth.api";
 
 const { useToken } = theme;
 const { Text, Title } = Typography;
@@ -223,16 +224,13 @@ export default function Login() {
         <Form
           onFinish={async (values) => {
             try {
-              const response = await axios.post(
-                `http://localhost:8085/api/v1/auth/login`,
-                {
-                  email: values.email,
-                  password: values.password,
-                }
-              );
-              if (response.data.status === 200) {
-                navigate("/home");
+            console.log(values);
+              const response = await loginUser(values.email, values.password);
+
+console.log(response);
+              if (response.status === 200) {
                 login();
+                navigate("/dashboard");
                 console.log(response);
               }
             } catch (error) {
@@ -256,7 +254,7 @@ export default function Login() {
               },
             ]}
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            // onChange={(e) => setEmail(e.target.value)}
           >
             <Input prefix={<MailOutlined />} placeholder="Email" />
           </Form.Item>
@@ -270,7 +268,7 @@ export default function Login() {
               },
             ]}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            // onChange={(e) => setPassword(e.target.value)}
           >
             <Input.Password
               prefix={<LockOutlined />}
