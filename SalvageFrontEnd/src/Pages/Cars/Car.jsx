@@ -103,17 +103,19 @@ function CarList() {
   const addToCart = useCartStore((state) => state.addToCart); // Get addToCart action from Zustand store
 
   useEffect(() => {
-    const fetchCars = async () => {
-      try {
-        const response = await axios.get("http://localhost:8085/api/v1/cars");
-        setCars(response.data);
-        console.log(response);
-      } catch (err) {
-        setError(err.message);
-      }
-    };
+    // const fetchCars = async () => {
+    //   try {
+    //     const response = await axios.get("http://localhost:8085/api/v1/cars");
+    //     setCars(response.data);
+    //     console.log(response);
+    //   } catch (err) {
+    //     setError(err.message);
+    //   }
+    // };
 
-    fetchCars();
+    // fetchCars();
+
+    console.log("object");
   }, []);
 
   const handleAddToCart = (car) => {
