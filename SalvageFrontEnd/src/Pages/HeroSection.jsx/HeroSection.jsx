@@ -1,6 +1,8 @@
-
 import { Button } from "antd";
-import HeroImage from "/assets/heroCar.jpeg"
+import HeroImage from "/assets/heroCar.jpeg";
+import { LoginForm } from "@ant-design/pro-components";
+import Login from "../Login/Login";
+import { Link } from "react-router-dom";
 
 function HeroSection() {
   return (
@@ -22,13 +24,13 @@ function HeroSection() {
             Experience excellence like never before with our exclusive products
             and services.
           </p>
-       <Button type="primary" size="large">
-        Get Started
-       </Button>
+          <Button type="primary" size="large">
+           <Link to="/login">Get Started</Link>
+          </Button>
         </div>
       </div>
     </>
   );
 }
 
-export default HeroSection
+export default HeroSection;
