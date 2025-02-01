@@ -5,9 +5,12 @@ import com.example.salvagebackend.Entity.Car;
 import com.example.salvagebackend.Repository.CarRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -40,9 +43,10 @@ public Car saveCar(CarDto carDto ){
         savedCar.setSellingPrice(carDto.getSellingPrice());
         savedCar.setVehicleCondition(carDto.getVehicleCondition());
         savedCar.setDamageDescription(carDto.getDamageDescription());
+        savedCar.setImageUrl(carDto.getImageUrl());
         return mycarRepo.save(savedCar);
 }
-
+// updating the whole car
 
     public Car updateCar( Long id ,CarDto carDto){
         Car updatedCar = mycarRepo.findById(id).orElseThrow(()-> new RuntimeException("car with this " +id + " does not exist"));
@@ -54,9 +58,25 @@ public Car saveCar(CarDto carDto ){
         updatedCar.setSellingPrice(carDto.getSellingPrice());
         updatedCar.setVehicleCondition(carDto.getVehicleCondition());
         updatedCar.setDamageDescription(carDto.getDamageDescription());
+        updatedCar.setImageUrl(carDto.getImageUrl());
         return mycarRepo.save(updatedCar);
     }
+// updating a single  info on the car
 
+//    public Car patchCar(Long id, Map<String, Object> updates) {
+//        Car car = mycarRepo.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Car not found"));
+//
+//        updates.forEach((key, value) -> {
+//            Field field = ReflectionUtils.findField(Car.class, key);
+//            if (field != null) {
+//                field.setAccessible(true);
+//                ReflectionUtils.setField(field, car, value);
+//            }
+//        });
+//
+//        return mycarRepo.save(car);
+//    }
     // deleting the existing car
     public void deleteCar(Long id){
         Car existingcar = mycarRepo.findById(id).orElseThrow(()-> new RuntimeException("car with this " +id + " does not exist"));

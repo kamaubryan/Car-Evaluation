@@ -1,299 +1,157 @@
-// import React, { useState } from "react";
-// import { Button, Checkbox, Form, Grid, Input, theme, Typography } from "antd";
-// import { LockOutlined, MailOutlined } from "@ant-design/icons";
-// import axios from "axios";
-// import { useNavigate } from "react-router-dom";
-// import { Link } from "react-router-dom";
-// const { useToken } = theme;
-// const { useBreakpoint } = Grid;
-// const { Text, Title } = Typography;
-
-// export default function Login() {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [error, setError] = useState("");
-//   const navigate = useNavigate;
-//   const handleLogin = async () => {
-//     try {
-//       if (!email || !password) {
-//         setError("Please enter both username and password.");
-//         return;
-//       }
-//       const response = await axios.post(
-//         "http://localhost:8085/api/v1/auth/login",
-//         {
-//           email,
-//           password,
-//         }
-//       );
-//       console.log("Login successful:", response.data);
-//       navigate("/landingPage");
-//     } catch (error) {
-//       console.error(
-//         "Login failed:",
-//         error.response ? error.response.data : error.message
-//       );
-//       setError("Invalid username or password.");
-//     }
-//   };
-//   const { token } = useToken();
-//   const screens = useBreakpoint();
-
-//   const onFinish = (values) => {
-//     console.log("Received values of form: ", values);
-//   };
-
-//   const styles = {
-//     container: {
-//       margin: "0 auto",
-//       padding: screens.md
-//         ? `${token.paddingXL}px`
-//         : `${token.sizeXXL}px ${token.padding}px`,
-//       width: "380px",
-//     },
-//     footer: {
-//       marginTop: token.marginLG,
-//       textAlign: "center",
-//       width: "100%",
-//     },
-//     forgotPassword: {
-//       float: "right",
-//     },
-//     header: {
-//       marginBottom: token.marginXL,
-//     },
-//     section: {
-//       alignItems: "center",
-//       backgroundColor: token.colorBgContainer,
-//       display: "flex",
-//       height: screens.sm ? "70vh" : "auto",
-//       padding: screens.md ? `${token.sizeXXL}px 0px` : "0px",
-//     },
-//     text: {
-//       color: token.colorTextSecondary,
-//     },
-//     title: {
-//       fontSize: screens.md ? token.fontSizeHeading2 : token.fontSizeHeading3,
-//     },
-//   };
-
-//   return (
-//     <section style={styles.section} className="h-[60vh]">
-//       <div style={styles.container} className="h-[60vh]">
-//         <div style={styles.header}>
-//           <Title style={styles.title}>Sign in</Title>
-//           <Text style={styles.text}>
-//             Welcome to Car salvage vehicle Marketplace where you can buy and
-//             sell your vehicles.
-//           </Text>
-//         </div>
-//         <Form
-//           name="normal_login"
-//           initialValues={{
-//             remember: true,
-//           }}
-//           onFinish={onFinish}
-//           layout="vertical"
-//           requiredMark="optional"
-//         >
-//           <Form.Item
-//             name="email"
-//             rules={[
-//               {
-//                 type: "email",
-//                 required: true,
-//                 message: "Please input your Email!",
-//               },
-//             ]}
-//             value={email}
-//             onChange={(e) => setEmail(e.target.value)}
-//           >
-//             <Input prefix={<MailOutlined />} placeholder="Email" />
-//           </Form.Item>
-//           <Form.Item
-//             name="password"
-//             rules={[
-//               {
-//                 required: true,
-//                 message: "Please input your Password!",
-//               },
-//             ]}
-//             value={password}
-//             onChange={(e) => setPassword(e.target.value)}
-//           >
-//             <Input.Password
-//               prefix={<LockOutlined />}
-//               type="password"
-//               placeholder="Password"
-//             />
-//           </Form.Item>
-//           <Form.Item>
-//             <Form.Item name="remember" valuePropName="checked" noStyle>
-//               <Checkbox>Remember me</Checkbox>
-//             </Form.Item>
-//           </Form.Item>
-//           <Form.Item style={{ marginBottom: "0px" }}>
-//             <Button
-//               block="true"
-//               type="primary"
-//               htmlType="submit"
-//               onClick={handleLogin}
-//             >
-//               Log in
-//             </Button>
-//             <div style={styles.footer}>
-//               <Text style={styles.text}>Don't have an account?</Text>{" "}
-//               <Link to="/signup">Sign up now</Link>
-//             </div>
-//           </Form.Item>
-//         </Form>
-//       </div>
-//     </section>
-//   );
-// }
-
-import React, { useContext, useEffect, useState } from "react";
-import { Button, Checkbox, Form, Input, theme, Typography } from "antd";
-import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { useStore } from "zustand";
-import useCartStore from "../../Zustand/Zustand";
+import React, { useContext, useState, useCallback } from "react";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  message,
+  Space,
+  Typography,
+} from "antd";
+import { LeftOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+import { useNavigate, Link } from "react-router-dom";
 import CartContext from "../../context/contextProvider";
 import { loginUser } from "../Services/auth.api";
 
-const { useToken } = theme;
 const { Text, Title } = Typography;
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Corrected this part
-  const { token } = useToken();
-
+  const navigate = useNavigate();
   const { login } = useContext(CartContext);
 
-  const styles = {
-    container: {
-      margin: "0 auto",
-      padding: `${token.paddingXL}px`,
-      width: "380px",
-    },
-    footer: {
-      marginTop: token.marginLG,
-      textAlign: "center",
-      width: "100%",
-    },
-    forgotPassword: {
-      float: "right",
-    },
-    header: {
-      marginBottom: token.marginXL,
-    },
-    section: {
-      alignItems: "center",
-      backgroundColor: token.colorBgContainer,
-      display: "flex",
-      height: "70vh",
-      padding: `${token.sizeXXL}px 0px`,
-    },
-    text: {
-      color: token.colorTextSecondary,
-    },
-    title: {
-      fontSize: token.fontSizeHeading2,
-    },
-  };
+  const handleSubmit = useCallback(
+    async (values) => {
+      try {
+        const response = await loginUser(values.email, values.password);
+        if (response) {
+          const userData = response?.data;
+          const firstName = userData?.FirstName || "User"; // Extract FirstName from response
 
+          // Check if the user exists in localStorage
+          const existingUser = localStorage.getItem(`user_${userData?.Email}`);
+
+          if (existingUser) {
+            message.success(`Welcome back, ${firstName}! 🎉`);
+            localStorage.setItem(`user_${userData?.Email}`, "exists");
+          } else {
+            message.success(`Welcome back, ${firstName}! 😊`);
+          }
+
+          localStorage.setItem("user", JSON.stringify(userData));
+          login();
+
+          if (userData?.Role === "ADMIN") {
+            navigate("/dashboard");
+          } else {
+            navigate("/");
+          }
+        }
+      } catch (err) {
+        message.error(
+          err.response?.data?.message || "Invalid email or password"
+        );
+        setError(err.response?.data?.message || "Invalid email or password");
+      }
+    },
+    [login, navigate]
+  );
   return (
-    <section style={styles.section} className="h-[60vh]">
-      <div style={styles.container} className="h-[60vh]">
-        <div style={styles.header}>
-          <Title style={styles.title}>Sign in</Title>
-          <Text style={styles.text}>
-            Welcome to Car salvage vehicle Marketplace where you can buy and
-            sell your vehicles.
-          </Text>
-        </div>
+    <div className="flex flex-col md:flex-row min-h-screen">
+      {/* Left Side - Image */}
+      <div className="hidden md:flex md:w-1/2 bg-gray-200 items-center justify-center">
+        <img
+          src="/assets/heroCar.jpeg"
+          alt="Login"
+          className="w-full h-full object-cover"
+        />
+      </div>
 
-        {/* Error Message */}
-        {error && <Text type="danger">{error}</Text>}
+      {/* Right Side - Login Form */}
+      <div className="w-full md:w-1/2 flex flex-col justify-center px-6 py-10 md:px-16 bg-white">
+        <div className="max-w-md mx-auto">
+          <div className="mb-6 text-center">
+            <Title level={3} className="text-gray-800">
+              Login to your account
+            </Title>
+            <Text className="text-gray-500">
+              Welcome to Car Salvage Marketplace. Buy and sell vehicles easily.
+            </Text>
+          </div>
 
-        <Form
-          onFinish={async (values) => {
-            try {
-            console.log(values);
-              const response = await loginUser(values.email, values.password);
+          {error && (
+            <Text type="danger" className="block mb-4 text-red-500">
+              {error}
+            </Text>
+          )}
 
-console.log(response);
-              if (response.status === 200) {
-                login();
-                navigate("/dashboard");
-                console.log(response);
-              }
-            } catch (error) {
-              console.log(error);
-            }
-          }}
-          name="normal_login"
-          initialValues={{
-            remember: true,
-          }}
-          layout="vertical"
-          requiredMark="optional"
-        >
-          <Form.Item
-            name="email"
-            rules={[
-              {
-                type: "email",
-                required: true,
-                message: "Please input your Email!",
-              },
-            ]}
-            value={email}
-            // onChange={(e) => setEmail(e.target.value)}
+          <Form
+            name="login_form"
+            initialValues={{ remember: true }}
+            onFinish={handleSubmit}
+            layout="vertical"
           >
-            <Input prefix={<MailOutlined />} placeholder="Email" />
-          </Form.Item>
+            <Form.Item
+              name="email"
+              rules={[
+                {
+                  type: "email",
+                  required: true,
+                  message: "Enter a valid email",
+                },
+              ]}
+            >
+              <Input
+                prefix={<MailOutlined />}
+                placeholder="Email"
+                className="w-full"
+              />
+            </Form.Item>
 
-          <Form.Item
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: "Please input your Password!",
-              },
-            ]}
-            value={password}
-            // onChange={(e) => setPassword(e.target.value)}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              type="password"
-              placeholder="Password"
-            />
-          </Form.Item>
+            <Form.Item
+              name="password"
+              rules={[{ required: true, message: "Enter your password" }]}
+            >
+              <Input.Password
+                prefix={<LockOutlined />}
+                placeholder="Password"
+                className="w-full"
+              />
+            </Form.Item>
 
-          <Form.Item>
-            <Form.Item name="remember" valuePropName="checked" noStyle>
+            <Form.Item>
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
-          </Form.Item>
 
-          <Form.Item style={{ marginBottom: "0px" }}>
-            <Button block="true" type="primary" htmlType="submit">
-              Log in
-            </Button>
-            <div style={styles.footer}>
-              <Text style={styles.text}>Don't have an account? </Text>
-              <Link to="/signup">Sign up now</Link>
+            <Space direction="vertical" size="small" style={{ width: "100%" }}>
+              <Button
+                block
+                type="primary"
+                htmlType="submit"
+                className="h-12 text-lg bg-blue-500 hover:bg-blue-600"
+              >
+                Log in
+              </Button>
+
+              {/* add a back button to home */}
+              <Button
+                block
+                type="default"
+                onClick={() => navigate("/")}
+                className="h-12 text-lg border-gray-400"
+              >
+                Back to Home
+              </Button>
+            </Space>
+            <div className="mt-4 text-center">
+              <Text className="text-gray-500">Don't have an account? </Text>
+              <Link to="/signup" className="text-blue-500 hover:underline">
+                Sign up
+              </Link>
             </div>
-          </Form.Item>
-        </Form>
+          </Form>
+        </div>
       </div>
-    </section>
+    </div>
   );
 }

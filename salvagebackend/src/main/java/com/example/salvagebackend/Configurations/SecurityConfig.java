@@ -23,23 +23,24 @@
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//            http.cors(cors -> cors.configurationSource(request -> {
-//                        CorsConfiguration config = new CorsConfiguration();
-//                        config.setAllowCredentials(true);
-//                        config.addAllowedOriginPattern("*");
-//                        config.addAllowedHeader("*");
-//                        config.addAllowedMethod("*");
-//                        return config;
-//                    }))
+            http.cors(cors -> cors.configurationSource(request -> {
+                        CorsConfiguration config = new CorsConfiguration();
+                        config.setAllowCredentials(true);
+                        config.addAllowedOriginPattern("*");
+                        config.addAllowedHeader("*");
+                        config.addAllowedMethod("*");
+                        return config;
+                    }));
                  http.csrf(AbstractHttpConfigurer::disable)
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                          .authorizeHttpRequests((requests) -> requests
-                                 .requestMatchers("/api/v1/auth/**").permitAll()  // Keep this for auth endpoints
-                                 .requestMatchers("/api/v1/cars/**").authenticated()  // Cars should be authenticated
-                                 .requestMatchers("/api/v1/parts/**").authenticated()
-                                 .requestMatchers("/api/v1/users/**").authenticated()
-                                 .requestMatchers("/api/transactions/**").authenticated()
-                                 .anyRequest().authenticated()
+//                                 .requestMatchers("/api/v1/auth/**").permitAll()  // Keep this for auth endpoints
+//                                 .requestMatchers("/api/v1/cars/**").authenticated()  // Cars should be authenticated
+//                                 .requestMatchers("/api/v1/parts/**").authenticated()
+//                                 .requestMatchers("/api/v1/users/**").authenticated()
+//                                 .requestMatchers("/api/transactions/**").authenticated()
+//                                 .anyRequest().authenticated()
+                                         .anyRequest().permitAll()
                          )
                     .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

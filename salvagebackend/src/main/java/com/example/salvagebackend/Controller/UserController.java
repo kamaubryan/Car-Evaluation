@@ -20,7 +20,7 @@ public class UserController {
     private UserService userService;
 
     // Get all users
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         try {
             List<User> users = userService.getAllUsers();
@@ -42,7 +42,7 @@ public class UserController {
     }
 
     // Create a new user
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         try {
             User newUser = userService.saveUser(user);
@@ -90,17 +90,6 @@ public class UserController {
     public ResponseEntity<List<User>> getUsersByName(@RequestParam String username) {
         try {
             List<User> users = userService.getUserByName(username);
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-    }
-
-    // Get users by address
-    @GetMapping("/address")
-    public ResponseEntity<List<User>> getUsersByAddress(@RequestParam String address) {
-        try {
-            List<User> users = userService.getUserByAddress(address);
             return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

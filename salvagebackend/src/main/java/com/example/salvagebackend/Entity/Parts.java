@@ -49,21 +49,21 @@ public class Parts  {
   this.id = id;
  }
 
- @ManyToOne
-private Car inventory;
 private String name;
 private String description;
 private String  conditionGrade;
  private BigDecimal price;
 private Integer quantity;
 
- public Car getInventory() {
-  return inventory;
+ public String getImageUrl() {
+  return imageUrl;
  }
 
- public void setInventory(Car inventory) {
-  this.inventory = inventory;
+ public void setImageUrl(String imageUrl) {
+  this.imageUrl = imageUrl;
  }
+@Column(length = 20000)
+ private String imageUrl;
 
  public String getName() {
   return name;

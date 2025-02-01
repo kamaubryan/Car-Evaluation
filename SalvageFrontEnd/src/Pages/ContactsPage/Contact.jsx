@@ -1,31 +1,183 @@
-import React from 'react'
+import React, { useState } from "react";
+import {
+  SendOutlined,
+  PhoneOutlined,
+  MailOutlined,
+  ClockCircleOutlined,
+} from "@ant-design/icons";
+import {
+  Button,
+  Input,
+  Form,
+  Alert,
+  Card,
+  Typography,
+  Space,
+  Row,
+  Col,
+} from "antd";
 
-function Contact() {
+const { TextArea } = Input;
+const { Title, Paragraph } = Typography;
+
+const ContactUs = () => {
+  const [form] = Form.useForm();
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (values) => {
+    console.log("Form Data:", values);
+    setSubmitted(true);
+    form.resetFields();
+    setTimeout(() => setSubmitted(false), 3000);
+  };
+
   return (
-    <>
-    <section className="bg-white dark:bg-gray-900">
-  <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
-      <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">Contact Us</h2>
-      <p className="mb-8 lg:mb-16 font-light text-center text-gray-500 dark:text-gray-400 sm:text-xl">Got a technical issue? Want to send feedback about a beta feature? Need details about our Business plan? Let us know.</p>
-      <form action="#" className="space-y-8">
-          <div>
-              <label  className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Your email</label>
-              <input type="email" id="email" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light" placeholder="example@gmail.com" required/>
-          </div>
-          <div>
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Subject</label>
-              <input type="text" id="subject" className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light" placeholder="Let us know how we can help you" required/>
-          </div>
-          <div className="sm:col-span-2">
-              <label  className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Your message</label>
-              <textarea id="message" rows="6" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Leave a comment..."></textarea>
-          </div>
-          <button type="submit" className="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Send message</button>
-      </form>
-  </div>
-</section>
-    </>
-  )
-}
+    <div className="max-w-7xl mx-auto px-6 py-16 bg-white">
+      <Title
+        level={1}
+        className="text-center text-gray-800 font-semibold mb-12"
+      >
+        Contact Us
+      </Title>
+      <Row gutter={[32, 32]} justify="center">
+        {/* Contact Information */}
+        <Col xs={24} md={10}>
+          <Card className="p-8 rounded-xl shadow-md border border-gray-200">
+            <Title level={2} className="text-gray-800 font-semibold">
+              Let's Connect
+            </Title>
+            <Paragraph className="text-gray-600 mb-8">
+              Get in touch with us for any inquiries or support. We're here to
+              help you succeed.
+            </Paragraph>
+            <Space direction="vertical" size="large">
+              {[
+                {
+                  icon: <PhoneOutlined className="text-xl text-gray-600" />,
+                  title: "Phone Number",
+                  text: "+1 (555) 123-4567",
+                },
+                {
+                  icon: <MailOutlined className="text-xl text-gray-600" />,
+                  title: "Email Address",
+                  text: "contact@company.com",
+                },
+                {
+                  icon: (
+                    <ClockCircleOutlined className="text-xl text-gray-600" />
+                  ),
+                  title: "Business Hours",
+                  text: "Mon - Fri: 9:00 AM - 6:00 PM",
+                },
+              ].map((info, index) => (
+                <Space key={index} align="start">
+                  {info.icon}
+                  <div>
+                    <Title level={5} className="text-gray-800">
+                      {info.title}
+                    </Title>
+                    <Paragraph className="text-gray-600">{info.text}</Paragraph>
+                  </div>
+                </Space>
+              ))}
+            </Space>
+          </Card>
+        </Col>
 
-export default Contact
+        {/* Contact Form */}
+        <Col xs={24} md={14}>
+          <Card className="p-8 rounded-xl shadow-lg border border-gray-200">
+            <Title level={2} className="text-gray-800">
+              Send us a Message
+            </Title>
+            <Form
+              form={form}
+              layout="vertical"
+              onFinish={handleSubmit}
+              className="mt-4"
+            >
+              {[
+                {
+                  name: "name",
+                  label: "Full Name",
+                  placeholder: "John Doe",
+                  rules: [
+                    { required: true, message: "Please enter your name" },
+                  ],
+                },
+                {
+                  name: "email",
+                  label: "Email Address",
+                  placeholder: "john@example.com",
+                  rules: [
+                    {
+                      required: true,
+                      type: "email",
+                      message: "Please enter a valid email",
+                    },
+                  ],
+                },
+                {
+                  name: "subject",
+                  label: "Subject",
+                  placeholder: "How can we help?",
+                  rules: [
+                    { required: true, message: "Please enter a subject" },
+                  ],
+                },
+              ].map((field, index) => (
+                <Form.Item
+                  key={index}
+                  name={field.name}
+                  label={field.label}
+                  rules={field.rules}
+                >
+                  <Input
+                    placeholder={field.placeholder}
+                    className="border-gray-300"
+                  />
+                </Form.Item>
+              ))}
+
+              <Form.Item
+                name="message"
+                label="Message"
+                rules={[
+                  { required: true, message: "Please enter your message" },
+                ]}
+              >
+                <TextArea
+                  rows={4}
+                  placeholder="Your message here..."
+                  className="border-gray-300"
+                />
+              </Form.Item>
+
+              <Button
+                type="primary"
+                htmlType="submit"
+                block
+                icon={<SendOutlined />}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Send Message
+              </Button>
+            </Form>
+
+            {submitted && (
+              <Alert
+                className="mt-4"
+                message="Success!"
+                description="Your message has been sent successfully. We'll get back to you soon."
+                type="success"
+                showIcon
+              />
+            )}
+          </Card>
+        </Col>
+      </Row>
+    </div>
+  );
+};
+
+export default ContactUs;

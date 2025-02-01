@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Dropdown, Avatar, Space } from "antd";
+import { Button, Dropdown, Avatar, Space, Typography, Badge } from "antd";
 import {
   UserAddOutlined,
   UserOutlined,
@@ -7,20 +7,30 @@ import {
   LogoutOutlined,
   ProfileOutlined,
 } from "@ant-design/icons";
-import { LogIn } from "lucide-react";
-import "./Navbar.css";
-import { useContext } from "react";
+import { LogIn, Menu } from "lucide-react";
+import { useState, useContext, useEffect } from "react";
 import CartContext from "../../context/contextProvider";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { isAuthenticated, logout, cart } = useContext(CartContext);
+  const { logout, cart } = useContext(CartContext);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Handle navbar background on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleCartClick = () => {
     navigate("/cart");
   };
 
-  // Profile menu items
   const profileMenuItems = [
     {
       key: "profile",
@@ -32,108 +42,140 @@ function Navbar() {
       key: "logout",
       label: "Logout",
       icon: <LogoutOutlined />,
+      danger: true,
       onClick: () => {
         logout();
+        localStorage.removeItem("user");
         navigate("/home");
       },
     },
   ];
 
   return (
-    <header>
-      <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
-        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-          <Link
-            to="/home"
-            className="lg: text-[24px] dark:text-white font-[700]"
-          >
-            Salvaged Cars
+    <header
+      className={`fixed w-full z-50 transition-all duration-300 ${
+        scrolled ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-white"
+      }`}
+    >
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <Link to="/home" className="flex items-center space-x-2">
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Wrecked Car
+            </span>
           </Link>
-          <div className="flex items-center lg:order-2 gap-3">
-            {isAuthenticated ? (
-              <>
-                <Button
-                  type="dashed"
-                  icon={<ShoppingCartOutlined />}
+
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex space-x-8">
+            {["Home", "Features", "About Us", "Contact Us"].map((item) => (
+              <Link
+                key={item}
+                to={
+                  item === "Home"
+                    ? "/home"
+                    : `/${item.toLowerCase().replace(/ /g, "")}`
+                }
+                className="relative group py-2"
+              >
+                <span className="text-gray-700 hover:text-blue-600 transition-colors">
+                  {item}
+                </span>
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+              </Link>
+            ))}
+          </div>
+
+          {/* User Actions */}
+          <div className="flex items-center gap-6">
+            {user ? (
+              <div className="flex items-center space-x-6">
+                {/* Cart */}
+                <button
                   onClick={handleCartClick}
+                  className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
                 >
-                  Cart ({cart.length})
-                </Button>
+                  <Badge
+                    count={cart?.length || 0}
+                    className="absolute -top-1 -right-1"
+                  >
+                    <ShoppingCartOutlined className="text-gray-700 text-xl" />
+                  </Badge>
+                </button>
+
+                {/* User Menu */}
                 <Dropdown
                   menu={{ items: profileMenuItems }}
                   placement="bottomRight"
                   arrow
+                  trigger={["click"]}
                 >
-                  <Space>
+                  <div className="flex items-center space-x-3 cursor-pointer hover:bg-gray-100 px-3 py-1.5 rounded-full transition-colors">
                     <Avatar
                       icon={<UserOutlined />}
-                      style={{
-                        backgroundColor: "#1890ff",
-                        cursor: "pointer",
-                      }}
+                      className="bg-gradient-to-r from-blue-500 to-purple-500"
                     />
-                  </Space>
+                    <span className="text-gray-700 font-medium">
+                      {user?.FirstName}
+                    </span>
+                  </div>
                 </Dropdown>
-              </>
+              </div>
             ) : (
-              <>
+              <div className="flex items-center gap-4">
                 <Button
-                  type="dashed"
-                  icon={<LogIn />}
+                  icon={<LogIn className="w-4 h-4" />}
+                  className="flex items-center space-x-2 hover:bg-gray-100 border-none shadow-none"
                   onClick={() => navigate("/login")}
                 >
-                  Login
+                  <span>Login</span>
                 </Button>
                 <Button
                   icon={<UserAddOutlined />}
-                  type="primary"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 border-none hover:opacity-90 text-white"
                   onClick={() => navigate("/signup")}
                 >
-                  Signup
+                  Sign Up
                 </Button>
-              </>
+              </div>
             )}
-          </div>
 
-          {/* Desktop Navbar Links */}
-          <div className="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1">
-            <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-              <Link
-                to="/home"
-                className="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white"
-              >
-                Home
-              </Link>
-
-              <Link
-                to="/features"
-                className="block py-2 pr-4 pl-3 text-black  hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-white lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-              >
-                Features
-              </Link>
-
-              <Link
-                to="/"
-                className="block py-2 pr-4 pl-3 text-gray-700   lg:hover:text-white lg:p-0 dark:text-gray-400 lg:dark:hover:text-whitedark:hover:text-white "
-              >
-                Why Choose Us
-              </Link>
-              <Link
-                to="/about"
-                className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-              >
-                About Us
-              </Link>
-              <Link
-                to="/contact"
-                className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-              >
-                Contact Us
-              </Link>
-            </ul>
+            {/* Mobile Menu Button */}
+            <button
+              className="lg:hidden p-2 hover:bg-gray-100 rounded-full transition-colors"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              <Menu className="w-6 h-6 text-gray-700" />
+            </button>
           </div>
         </div>
       </nav>
+
+      {/* Mobile Menu */}
+      <div
+        className={`lg:hidden transition-all duration-300 overflow-hidden ${
+          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="bg-white border-t border-gray-100 px-6 py-4 space-y-2">
+          {["Home", "Features", "Why Choose Us", "About Us", "Contact Us"].map(
+            (item) => (
+              <Link
+                key={item}
+                to={
+                  item === "Home"
+                    ? "/home"
+                    : `/${item.toLowerCase().replace(/ /g, "")}`
+                }
+                className="block py-2 px-4 text-gray-700 hover:bg-gray-50 hover:text-blue-600 rounded-lg transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                {item}
+              </Link>
+            )
+          )}
+        </div>
+      </div>
     </header>
   );
 }

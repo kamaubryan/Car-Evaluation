@@ -26,7 +26,7 @@ public class CarController {
     }
 
     // Saving the car for the first time
-    @PostMapping("/new")
+    @PostMapping
     public ResponseEntity<?> createCar(@RequestBody CarDto car) {
         try {
             Car savedCar = carService.saveCar(car);
@@ -83,10 +83,10 @@ public class CarController {
     }
 
     // Updating the car
-    @PutMapping
-    public ResponseEntity<Car> updateCar(@RequestBody CarDto car) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody CarDto car) {
         try {
-            Car updatedCar = carService.saveCar(car);
+            Car updatedCar = carService.updateCar(id,car);
             return new ResponseEntity<>(updatedCar, HttpStatus.OK);
         } catch (Exception e) {
             throw new RuntimeException("Error updating car: " + car, e);

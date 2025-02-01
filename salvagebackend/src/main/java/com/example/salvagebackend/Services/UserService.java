@@ -28,11 +28,11 @@ public class UserService {
     public User saveUser(User user) {
         User savedUser = new User();
         savedUser.setUsername(user.getUsername());
-        savedUser.setPassword(user.getPassword());
         savedUser.setEmail(user.getEmail());
         savedUser.setFirstName(user.getFirstName());
-        savedUser.setLastName(user.getLastName());
         savedUser.setPassword(user.getPassword());
+        savedUser.setRole(user.getRole());
+        savedUser.setCreatedAt(user.getCreatedAt());
       return   myUserRepo.save(savedUser);
     }
     // updating the existing car
@@ -41,9 +41,9 @@ public class UserService {
         User currentUser = myUserRepo.findById(id).orElseThrow(() -> new RuntimeException("User with this " + id + " does not exist"));
         currentUser.setUsername(user.getUsername());
         currentUser.setFirstName(user.getFirstName());
-        currentUser.setLastName(user.getLastName());
         currentUser.setEmail(user.getEmail());
-        currentUser.setAddress(user.getAddress());
+        currentUser.setPassword(user.getPassword());
+        currentUser.setUpdatedAt(user.getUpdatedAt());
         return  myUserRepo.save(currentUser);
     }
     // deleting user
@@ -70,15 +70,8 @@ public class UserService {
         return nameUsers;
     }
 
-    // getting by address
 
-    public List<User> getUserByAddress(String address) {
-        List<User> addressUsers = myUserRepo.findByAddress(address);
-        if (addressUsers.isEmpty()) {
-            throw new RuntimeException("User with this " + address + " does not exist");
-        }
-        return addressUsers;
-    }
+
 
     // getting by last name
 

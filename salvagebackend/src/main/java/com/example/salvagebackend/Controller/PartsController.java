@@ -20,7 +20,7 @@ public class PartsController {
     private PartsServices partsServices;
 
     // Get all parts
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<?> getAllParts() {
         try {
             List<Parts> parts = partsServices.getAllParts();
@@ -42,7 +42,7 @@ public class PartsController {
     }
 
     // Create new part
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<?> createPart(@RequestBody PartDto partDto) {
         try {
             Parts part = partsServices.saveParts(partDto);
@@ -116,5 +116,5 @@ public class PartsController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving parts by description: " + e.getMessage());
         }
-    }g
+    }
 }

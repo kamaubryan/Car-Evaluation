@@ -34,6 +34,7 @@ public class PartsServices {
         savedParts.setPrice(partDto.getPrice());
         savedParts.setConditionGrade(partDto.getConditionGrade());
         savedParts.setQuantity(partDto.getQuantity());
+        savedParts.setImageUrl(partDto.getImageUrl());
       return   myPartsRepo.save(savedParts);
      }
 // updating the parts
@@ -44,6 +45,7 @@ public class PartsServices {
         updatedParts.setPrice(partDto.getPrice());
         updatedParts.setConditionGrade(partDto.getConditionGrade());
         updatedParts.setQuantity(partDto.getQuantity());
+        updatedParts.setImageUrl(partDto.getImageUrl());
         return myPartsRepo.save(updatedParts);
 
      }

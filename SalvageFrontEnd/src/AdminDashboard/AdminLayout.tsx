@@ -5,10 +5,11 @@ import AdminDashBoard from "./DashBoard/AdminDashboard";
 function AdminLayout() {
   return (
     <div className="min-h-screen flex">
-      {/* <AdminDashBoard /> */}
-      <div className="flex-grow">
-        <Outlet />
-      </div>
+      <AdminDashBoard>
+        <div className="flex-grow">
+          <Outlet />
+        </div>
+      </AdminDashBoard>
     </div>
   );
 }

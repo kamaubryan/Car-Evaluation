@@ -14,6 +14,15 @@ public class PartDto implements Serializable {
     private String  conditionGrade;
     private BigDecimal price;
     private Integer quantity;
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public String getName() {
         return name;

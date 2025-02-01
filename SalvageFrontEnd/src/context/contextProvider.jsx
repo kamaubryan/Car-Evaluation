@@ -8,6 +8,7 @@ export const CartContext = createContext(undefined);
 export function CartProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [cart, setCart] = useState([]);
+  const [collapsed, setCollapsed] = useState(false);
 
   const login = () => setIsAuthenticated(true);
   const logout = () => setIsAuthenticated(false);

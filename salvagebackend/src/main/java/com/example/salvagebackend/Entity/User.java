@@ -25,12 +25,10 @@ public class User{
 private String username;
     private String firstName;
 //    @Column(name = "L_Name")
-    private String lastName;
     @Column(unique = true)
     private String phoneNumber;
-//    @Column(name = "Address")
-    private String address;
-    private String role;
+@Enumerated(EnumType.STRING)
+    private Roles role;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -99,13 +97,6 @@ private String username;
         this.firstName = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -115,18 +106,14 @@ private String username;
         this.phoneNumber = phoneNumber;
     }
 
-    public String getAddress() {
-        return address;
-    }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getRole() {
+    public Roles getRole() {
         return role;
     }
-    public void setRole(String role) {
+
+    public void setRole(Roles role) {
         this.role = role;
-    }
-}
+    }}
+
+
+

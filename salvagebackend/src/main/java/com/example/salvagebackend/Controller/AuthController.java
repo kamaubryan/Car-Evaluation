@@ -39,11 +39,14 @@ public class AuthController {
     public ResponseEntity<ApiResponse<String>> registerUser(@RequestBody UserDto user) {
         try {
             User existingUser = new User();
-            existingUser.setAddress(user.getAddress());
             existingUser.setEmail(user.getEmail());
             existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
             existingUser.setFirstName(user.getFirstName());
-            existingUser.setLastName(user.getLastName());
+            existingUser.setUsername(user.getUsername());
+            existingUser.setPhoneNumber(user.getPhoneNumber());
+         existingUser.setRole(user.getRole());
+         existingUser.setCreatedAt(user.getCreatedAt());
+         existingUser.setUpdatedAt(user.getUpdatedAt());
 
             userRepository.save(existingUser);
 
@@ -81,7 +84,8 @@ public class AuthController {
             Map<String, String> userDetails = new HashMap<>();
             userDetails.put("token", token);
             userDetails.put("FirstName", user.getFirstName());
-            userDetails.put("LastName", user.getLastName());
+   userDetails.put("Email", user.getEmail());
+   userDetails.put("Role", String.valueOf(user.getRole()));
 
             ApiResponse<?> response = new ApiResponse<>(
                     HttpStatus.OK.value(),

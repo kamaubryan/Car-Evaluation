@@ -1,114 +1,133 @@
+import React from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import {
   ModalForm,
-  ProForm,
-  ProFormMoney,
-  ProFormSwitch,
   ProFormText,
+  ProFormDigit,
 } from "@ant-design/pro-components";
-import { Button, Form, message } from "antd";
-
-const waitTime = (time = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
+import { Button, Form, message, Row, Col } from "antd";
+import { Postcars } from "../../Pages/Services/auth.api";
 
 export default function VehicleModal() {
   const [form] = Form.useForm();
 
+  const handleSubmit = async (values) => {
+    try {
+      await Postcars(
+        values.title,
+        values.sellingPrice,
+        values.damageDescription,
+        values.make,
+        values.model,
+        values.year,
+        values.mileage,
+        values.vehicleCondition,
+        values.imgUrl
+      );
+
+      message.success("Car posted successfully!");
+      form.resetFields();
+      return true;
+    } catch (error) {
+      message.error(error.message || "Failed to post car");
+      return false;
+    }
+  };
+
   return (
-    <>
-      <ModalForm
-        title="Add Vehicle"
-        trigger={
-          <Button type="primary">
-            <PlusOutlined />
-            Add
-          </Button>
-        }
-        form={form}
-        autoFocusFirstInput
-        modalProps={{
-          destroyOnClose: true,
-          onCancel: () => console.log("Modal closed"),
-          cancelText:"Cancel",
-          okText:"Save"
-        }}
-        submitTimeout={2000}
-        onFinish={async (values) => {
-          await waitTime(2000);
-          console.log(values.name);
-          message.success("Submission successful");
-          return true;
-        }}
-      >
-        <ProForm.Group>
+    <ModalForm
+      title="Add Vehicle"
+      trigger={
+        <Button type="primary" icon={<PlusOutlined />}>
+          Add Vehicle
+        </Button>
+      }
+      form={form}
+      autoFocusFirstInput
+      modalProps={{
+        destroyOnClose: true,
+        onCancel: () => console.log("Modal closed"),
+        cancelText: "Cancel",
+        okText: "Save",
+      }}
+      onFinish={handleSubmit}
+    >
+      <Row gutter={[16, 16]}>
+        <Col xs={24} sm={12}>
           <ProFormText
-            width="sm"
             name="title"
             label="Title"
-            placeholder="Please enter the name"
+            placeholder="Enter vehicle title"
+            rules={[{ required: true }]}
           />
-          <ProFormText
-            width="sm"
-            name="make"
-            label="Make"
-            placeholder="Please enter the car make"
-          />
-          <ProFormText
-            width="sm"
-            name="model"
-            label="Model"
-            placeholder="Please enter the model"
-          />
-          <ProFormMoney
-            label="Year of Make"
-            name="amount0"
-            fieldProps={{
-              moneySymbol: false,
-            }}
-            locale="en-US"
-            initialValue={2019}
+        </Col>
+        <Col xs={24} sm={12}>
+          <ProFormDigit
+            name="sellingPrice"
+            label="Selling Price (KES)"
+            placeholder="Enter price"
             min={0}
-            width="sm"
+            rules={[{ required: true }]}
           />
+        </Col>
+        <Col xs={24}>
           <ProFormText
-            width="sm"
-            name="mileage"
-            label="Mileage"
-            placeholder="Please enter the company name"
-          />
-          <ProFormText
-            width="sm"
-            name="vehicleCondition"
-            label=" Vehicle Condition"
-            placeholder="Please enter the vehicle condition"
-          />
-          <ProFormText
-            width="sm"
-            name="imageUrl"
-            label="Image URL"
-            placeholder="Please enter the Image url"
-          />
-          <ProFormText
-            width="sm"
             name="damageDescription"
             label="Damage Description"
-            placeholder="Please enter the description"
+            placeholder="Describe any damage"
           />
-          <ProFormMoney
-            label="Selling Price"
-            name="sellingPrice"
-            locale="en-Ke" // Kenyan Shilling locale
-            initialValue={22.22}
+        </Col>
+        <Col xs={24} sm={12}>
+          <ProFormText
+            name="make"
+            label="Make"
+            placeholder="Enter vehicle make"
+            rules={[{ required: true }]}
+          />
+        </Col>
+        <Col xs={24} sm={12}>
+          <ProFormText
+            name="model"
+            label="Model"
+            placeholder="Enter vehicle model"
+            rules={[{ required: true }]}
+          />
+        </Col>
+        <Col xs={24} sm={12}>
+          <ProFormDigit
+            name="year"
+            label="Year"
+            placeholder="Enter vehicle year"
+            min={1900}
+            max={new Date().getFullYear()}
+            rules={[{ required: true }]}
+          />
+        </Col>
+        <Col xs={24} sm={12}>
+          <ProFormDigit
+            name="mileage"
+            label="Mileage (KM)"
+            placeholder="Enter mileage"
             min={0}
-            trigger="onBlur"
+            rules={[{ required: true }]}
           />
-        </ProForm.Group>
-      </ModalForm>
-    </>
+        </Col>
+        <Col xs={24}>
+          <ProFormText
+            name="vehicleCondition"
+            label="Condition"
+            placeholder="Enter vehicle condition"
+          />
+        </Col>
+        <Col xs={24}>
+          <ProFormText
+            name="imgUrl"
+            label="Image URL"
+            placeholder="Enter image URL"
+            rules={[{ type: "url", message: "Enter a valid URL" }]}
+          />
+        </Col>
+      </Row>
+    </ModalForm>
   );
 }

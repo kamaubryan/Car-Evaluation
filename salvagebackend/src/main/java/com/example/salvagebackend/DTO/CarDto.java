@@ -10,15 +10,25 @@ import java.math.BigDecimal;
 //@Getter
 //@Setter
 public class CarDto  implements Serializable {
-    public String title;
-    public BigDecimal sellingPrice;
-    public String damageDescription;
-    public String make;
-    public String model;
-    public Integer year;
-    public Integer mileage;
-    public String vehicleCondition;
+    private String title;
+    private BigDecimal sellingPrice;
+    private String damageDescription;
+    private String make;
+    private String model;
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    private Integer year;
+    private Integer mileage;
+    private String vehicleCondition;
+@Column(length = 20000)
+private String imageUrl;
     public String getTitle() {
         return title;
     }

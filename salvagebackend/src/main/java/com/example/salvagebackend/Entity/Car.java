@@ -19,15 +19,25 @@ public class Car {
   private Long id;
 
   @Column(name = "car_Name")
-  public String title;
-  public BigDecimal  sellingPrice;
-  public String damageDescription;
-  public String make;
-  public String model;
+  private String title;
+  private BigDecimal  sellingPrice;
+  private String damageDescription;
+  private String make;
+  private String model;
   @Column(name = "yearOfMake")
-  public Integer year;
-  public Integer mileage;
-  public String vehicleCondition;
+  private Integer year;
+  private Integer mileage;
+  private String vehicleCondition;
+  @Column(length = 200000)
+private String imageUrl;
+
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
+  }
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
